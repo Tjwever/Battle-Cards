@@ -425,3 +425,5 @@ const cardsData = [
         action_points: 0,
     },
 ]
+
+export default cardsData
