@@ -1,3 +1,5 @@
+import { CardType } from './cardTypes'
+
 const cardsData = [
     // Attack Cards
 
@@ -5,7 +7,7 @@ const cardsData = [
     {
         id: 1,
         name: 'Light Attack',
-        action_type: 'Attack',
+        action_type: CardType.Attack,
         description: 'An Attack Card reducing opponents defence or health',
         art: 'image',
         attack: 1,
@@ -15,7 +17,7 @@ const cardsData = [
     {
         id: 2,
         name: 'Light Attack',
-        action_type: 'Attack',
+        action_type: CardType.Attack,
         description: 'An Attack Card reducing opponents defence or health',
         art: 'image',
         attack: 1,
@@ -25,7 +27,7 @@ const cardsData = [
     {
         id: 3,
         name: 'Light Attack',
-        action_type: 'Attack',
+        action_type: CardType.Attack,
         description: 'An Attack Card reducing opponents defence or health',
         art: 'image',
         attack: 1,
@@ -35,7 +37,7 @@ const cardsData = [
     {
         id: 4,
         name: 'Light Attack',
-        action_type: 'Attack',
+        action_type: CardType.Attack,
         description: 'An Attack Card reducing opponents defence or health',
         art: 'image',
         attack: 1,
@@ -45,7 +47,7 @@ const cardsData = [
     {
         id: 5,
         name: 'Light Attack',
-        action_type: 'Attack',
+        action_type: CardType.Attack,
         description: 'An Attack Card reducing opponents defence or health',
         art: 'image',
         attack: 1,
@@ -57,7 +59,7 @@ const cardsData = [
     {
         id: 6,
         name: 'Medium Attack',
-        action_type: 'Attack',
+        action_type: CardType.Attack,
         description: 'An Attack Card reducing opponents defence or health',
         art: 'image',
         attack: 2,
@@ -67,7 +69,7 @@ const cardsData = [
     {
         id: 7,
         name: 'Medium Attack',
-        action_type: 'Attack',
+        action_type: CardType.Attack,
         description: 'An Attack Card reducing opponents defence or health',
         art: 'image',
         attack: 2,
@@ -77,7 +79,7 @@ const cardsData = [
     {
         id: 8,
         name: 'Medium Attack+',
-        action_type: 'Attack',
+        action_type: CardType.Attack,
         description: 'An Attack Card reducing opponents defence or health',
         art: 'image',
         attack: 2,
@@ -89,7 +91,7 @@ const cardsData = [
     {
         id: 9,
         name: 'Heavy Attack',
-        action_type: 'Attack',
+        action_type: CardType.Attack,
         description: 'An Attack Card reducing opponents defence or health',
         art: 'image',
         attack: 3,
@@ -99,7 +101,7 @@ const cardsData = [
     {
         id: 10,
         name: 'Heavy Attack+',
-        action_type: 'Attack',
+        action_type: CardType.Attack,
         description: 'An Attack Card reducing opponents defence or health',
         art: 'image',
         attack: 3,
@@ -113,7 +115,7 @@ const cardsData = [
     {
         id: 11,
         name: 'Light Defense',
-        action_type: 'Defense',
+        action_type: CardType.Defense,
         description: 'An Defense Card reducing opponents defence or health',
         art: 'image',
         attack: 0,
@@ -123,7 +125,7 @@ const cardsData = [
     {
         id: 12,
         name: 'Light Defense',
-        action_type: 'Defense',
+        action_type: CardType.Defense,
         description: 'An Defense Card reducing opponents defence or health',
         art: 'image',
         attack: 0,
@@ -133,7 +135,7 @@ const cardsData = [
     {
         id: 13,
         name: 'Light Defense',
-        action_type: 'Defense',
+        action_type: CardType.Defense,
         description: 'An Defense Card reducing opponents defence or health',
         art: 'image',
         attack: 0,
@@ -143,7 +145,7 @@ const cardsData = [
     {
         id: 14,
         name: 'Light Defense',
-        action_type: 'Defense',
+        action_type: CardType.Defense,
         description: 'An Defense Card reducing opponents defence or health',
         art: 'image',
         attack: 0,
@@ -153,7 +155,7 @@ const cardsData = [
     {
         id: 15,
         name: 'Light Defense',
-        action_type: 'Defense',
+        action_type: CardType.Defense,
         description: 'An Defense Card reducing opponents defence or health',
         art: 'image',
         attack: 0,
@@ -165,7 +167,7 @@ const cardsData = [
     {
         id: 16,
         name: 'Medium Defense',
-        action_type: 'Defense',
+        action_type: CardType.Defense,
         description: 'An Defense Card reducing opponents defence or health',
         art: 'image',
         attack: 0,
@@ -175,7 +177,7 @@ const cardsData = [
     {
         id: 17,
         name: 'Medium Defense',
-        action_type: 'Defense',
+        action_type: CardType.Defense,
         description: 'An Defense Card reducing opponents defence or health',
         art: 'image',
         attack: 0,
@@ -185,7 +187,7 @@ const cardsData = [
     {
         id: 18,
         name: 'Medium Defense+',
-        action_type: 'Defense',
+        action_type: CardType.Defense,
         description: 'An Defense Card reducing opponents defence or health',
         art: 'image',
         attack: 0,
@@ -197,7 +199,7 @@ const cardsData = [
     {
         id: 19,
         name: 'Heavy Defense',
-        action_type: 'Defense',
+        action_type: CardType.Defense,
         description: 'An Defense Card reducing opponents defence or health',
         art: 'image',
         attack: 0,
@@ -207,7 +209,7 @@ const cardsData = [
     {
         id: 20,
         name: 'Heavy Defense+',
-        action_type: 'Defense',
+        action_type: CardType.Defense,
         description: 'An Defense Card reducing opponents defence or health',
         art: 'image',
         attack: 0,
@@ -221,7 +223,7 @@ const cardsData = [
     {
         id: 21,
         name: 'Attack Up',
-        action_type: 'Buff',
+        action_type: CardType.Buff,
         description: 'Adds 1 attack power to an Attack type card',
         art: 'image',
         attack: 1,
@@ -231,7 +233,7 @@ const cardsData = [
     {
         id: 22,
         name: 'Attack Up',
-        action_type: 'Buff',
+        action_type: CardType.Buff,
         description: 'Adds 1 attack power to an Attack type card',
         art: 'image',
         attack: 1,
@@ -241,7 +243,7 @@ const cardsData = [
     {
         id: 23,
         name: 'Attack Up',
-        action_type: 'Buff',
+        action_type: CardType.Buff,
         description: 'Adds 1 attack power to an Attack type card',
         art: 'image',
         attack: 1,
@@ -251,7 +253,7 @@ const cardsData = [
     {
         id: 24,
         name: 'Attack Up',
-        action_type: 'Buff',
+        action_type: CardType.Buff,
         description: 'Adds 1 attack power to an Attack type card',
         art: 'image',
         attack: 1,
@@ -261,7 +263,7 @@ const cardsData = [
     {
         id: 25,
         name: 'Attack Up+',
-        action_type: 'Buff',
+        action_type: CardType.Buff,
         description: 'Adds 2 attack power to an Attack type card',
         art: 'image',
         attack: 2,
@@ -273,7 +275,7 @@ const cardsData = [
     {
         id: 26,
         name: 'Defense Up',
-        action_type: 'Buff',
+        action_type: CardType.Buff,
         description: 'Adds 1 block to a Defense type card',
         art: 'image',
         attack: 0,
@@ -283,7 +285,7 @@ const cardsData = [
     {
         id: 27,
         name: 'Defense Up',
-        action_type: 'Buff',
+        action_type: CardType.Buff,
         description: 'Adds 1 block to a Defense type card',
         art: 'image',
         attack: 0,
@@ -293,7 +295,7 @@ const cardsData = [
     {
         id: 28,
         name: 'Defense Up',
-        action_type: 'Buff',
+        action_type: CardType.Buff,
         description: 'Adds 1 block to a Defense type card',
         art: 'image',
         attack: 0,
@@ -303,7 +305,7 @@ const cardsData = [
     {
         id: 29,
         name: 'Defense Up',
-        action_type: 'Buff',
+        action_type: CardType.Buff,
         description: 'Adds 2 block to a Defense type card',
         art: 'image',
         attack: 0,
@@ -313,7 +315,7 @@ const cardsData = [
     {
         id: 30,
         name: 'Defense Up+',
-        action_type: 'Buff',
+        action_type: CardType.Buff,
         description: 'Adds 2 block to a Defense type card',
         art: 'image',
         attack: 0,
@@ -325,7 +327,7 @@ const cardsData = [
     {
         id: 31,
         name: 'Heal',
-        action_type: 'Buff',
+        action_type: CardType.Heal,
         description: 'Adds 2 to Players Health',
         art: 'image',
         attack: 0,
@@ -335,7 +337,7 @@ const cardsData = [
     {
         id: 32,
         name: 'Heal',
-        action_type: 'Buff',
+        action_type: CardType.Heal,
         description: 'Adds 2 to Players Health',
         art: 'image',
         attack: 0,
@@ -345,7 +347,7 @@ const cardsData = [
     {
         id: 33,
         name: 'Heal',
-        action_type: 'Buff',
+        action_type: CardType.Heal,
         description: 'Adds 2 to Players Health',
         art: 'image',
         attack: 0,
@@ -355,7 +357,7 @@ const cardsData = [
     {
         id: 34,
         name: 'Heal',
-        action_type: 'Buff',
+        action_type: CardType.Heal,
         description: 'Adds 2 to Players Health',
         art: 'image',
         attack: 0,
@@ -365,7 +367,7 @@ const cardsData = [
     {
         id: 35,
         name: 'Heal+',
-        action_type: 'Buff',
+        action_type: CardType.Heal,
         description: 'Adds 5 to Players Health',
         art: 'image',
         attack: 0,
@@ -377,7 +379,7 @@ const cardsData = [
     {
         id: 36,
         name: 'Action Points',
-        action_type: 'Buff',
+        action_type: CardType.Buff,
         description: 'Adds 1 to Players Action Points',
         art: 'image',
         attack: 0,
@@ -387,7 +389,7 @@ const cardsData = [
     {
         id: 37,
         name: 'Action Points',
-        action_type: 'Buff',
+        action_type: CardType.Buff,
         description: 'Adds 1 to Players Action Points',
         art: 'image',
         attack: 0,
@@ -397,7 +399,7 @@ const cardsData = [
     {
         id: 38,
         name: 'Action Points',
-        action_type: 'Buff',
+        action_type: CardType.Buff,
         description: 'Adds 1 to Players Action Points',
         art: 'image',
         attack: 0,
@@ -407,7 +409,7 @@ const cardsData = [
     {
         id: 39,
         name: 'Action Points',
-        action_type: 'Buff',
+        action_type: CardType.Buff,
         description: 'Adds 1 to Players Action Points',
         art: 'image',
         attack: 0,
@@ -417,7 +419,7 @@ const cardsData = [
     {
         id: 40,
         name: 'Action Points',
-        action_type: 'Buff',
+        action_type: CardType.Buff,
         description: 'Adds 1 to Players Action Points',
         art: 'image',
         attack: 0,
