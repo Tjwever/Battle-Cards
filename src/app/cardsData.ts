@@ -1,6 +1,7 @@
 import { CardType } from './cardTypes'
+import { Card } from '../features/cards/cardSlice'
 
-const cardsData = [
+const cardsData: Card[] = [
     // Attack Cards
 
     // Light Attacks
