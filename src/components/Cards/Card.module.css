@@ -4,6 +4,36 @@
     align-items: center;
     flex-wrap: wrap;
     width: 500px;
-    height: 500px;
     border: 1px solid black;
+}
+
+.card {
+    font-size: 1rem;
+    border: 1px solid black;
+    width: 170px;
+    height: 200px;
+}
+
+.description {
+    font-size: 0.8rem;
+    font-weight: lighter;
+}
+
+.iconContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    height: 100px;
+    width: 100%;
+}
+
+.iconBG {
+
+}
+
+.iconContainer img {
+    display: block;
+    width: 60px;
+    height: 60px;
 }
