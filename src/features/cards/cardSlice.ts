@@ -14,25 +14,32 @@ export interface Card {
 }
 
 export interface CardState {
-    deck: Card[]
-    cardsPlayed: Card[]
-    discardPile: Card[]
+    playerDeck: Card[]
+    computerDeck: Card[]
+    playerCardsPlayed: Card[]
+    computerCardsPlayed: Card[]
+    playerDiscardPile: Card[]
+    computerDiscardPile: Card[]
 }
 
 const initialState: CardState = {
-    deck: cardsData,
-    cardsPlayed: [],
-    discardPile: [],
+    playerDeck: cardsData,
+    computerDeck: cardsData,
+    playerCardsPlayed: [],
+    computerCardsPlayed: [],
+    playerDiscardPile: [],
+    computerDiscardPile: [],
 }
 
-export const shuffleDeck = createAction('card/shuffleDeck')
+export const playerShuffleDeck = createAction('card/playerShuffleDeck')
+export const cpuShuffleDeck = createAction('card/cpuShuffleDeck')
 
 export const cardSlice = createSlice({
     name: 'card',
     initialState,
     reducers: {},
     extraReducers: (builder) => {
-        builder.addCase(shuffleDeck, (state) => {
+        builder.addCase(playerShuffleDeck, (state) => {
             function shuffleArray(array: Card[]) {
                 const shuffledArray = [...array]
                 for (let i = shuffledArray.length - 1; i > 0; i--) {
@@ -45,7 +52,22 @@ export const cardSlice = createSlice({
                 return shuffledArray
             }
 
-            state.deck = shuffleArray(state.deck)
+            state.playerDeck = shuffleArray(state.playerDeck)
+        })
+        .addCase(cpuShuffleDeck, (state) => {
+            function shuffleArray(array: Card[]) {
+                const shuffledArray = [...array]
+                for (let i = shuffledArray.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1))
+                    ;[shuffledArray[i], shuffledArray[j]] = [
+                        shuffledArray[j],
+                        shuffledArray[i],
+                    ]
+                }
+                return shuffledArray
+            }
+
+            state.computerDeck = shuffleArray(state.computerDeck)
         })
     },
 })
