@@ -11,8 +11,14 @@ const initialState: PlayerState = {
     cpu: { health: 10 },
 }
 
-export const incrementHealth = createAction<{ amount: number; player: 'player' | 'cpu' }>('player/incrementHealth');
-export const decrementHealth = createAction<{ amount: number; player: 'player' | 'cpu' }>('player/decrementHealth');
+export const incrementHealth = createAction<{
+    amount: number
+    player: 'player' | 'cpu'
+}>('player/incrementHealth')
+export const decrementHealth = createAction<{
+    amount: number
+    player: 'player' | 'cpu'
+}>('player/decrementHealth')
 
 export const playerSlice = createSlice({
     name: 'player',
@@ -20,23 +26,41 @@ export const playerSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder
-          .addCase(incrementHealth, (state, action: PayloadAction<{ amount: number; player: 'player' | 'cpu' }>) => {
-            const { amount, player } = action.payload;
-            if (player === 'player') {
-              state.player.health += amount;
-            } else if (player === 'cpu') {
-              state.cpu.health += amount;
-            }
-          })
-          .addCase(decrementHealth, (state, action: PayloadAction<{ amount: number; player: 'player' | 'cpu' }>) => {
-            const { amount, player } = action.payload;
-            if (player === 'player') {
-              state.player.health -= amount;
-            } else if (player === 'cpu') {
-              state.cpu.health -= amount;
-            }
-          });
-      }
+            .addCase(
+                incrementHealth,
+                (
+                    state,
+                    action: PayloadAction<{
+                        amount: number
+                        player: 'player' | 'cpu'
+                    }>
+                ) => {
+                    const { amount, player } = action.payload
+                    if (player === 'player') {
+                        state.player.health += amount
+                    } else if (player === 'cpu') {
+                        state.cpu.health += amount
+                    }
+                }
+            )
+            .addCase(
+                decrementHealth,
+                (
+                    state,
+                    action: PayloadAction<{
+                        amount: number
+                        player: 'player' | 'cpu'
+                    }>
+                ) => {
+                    const { amount, player } = action.payload
+                    if (player === 'player') {
+                        state.player.health -= amount
+                    } else if (player === 'cpu') {
+                        state.cpu.health -= amount
+                    }
+                }
+            )
+    },
 })
 
 // export const { incrementHealth, decrementHealth } = playerSlice.actions

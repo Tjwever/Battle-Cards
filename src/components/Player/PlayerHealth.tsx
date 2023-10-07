@@ -8,6 +8,7 @@ import {
     cpuHealth,
 } from '../../features/player/playerSlice'
 import styles from '../../App.module.css'
+import CardSpot from '../Cards/CardSpot'
 
 export function PlayerHealth() {
     const playersHealth = useAppSelector(playerHealth)
@@ -24,17 +25,33 @@ export function PlayerHealth() {
 
     return (
         <div className={styles.gameBoard}>
-            <div className={styles.cpuGameBoard}>
-                <span className={styles.value}>CPU's Health: {cpusHealth}</span>
-                <button onClick={handleDecrementCPUHealth}>Attack CPU</button>
+            <div className={styles.playersSide}>
+                <CardSpot title={'Deck'} />
+                <div className={styles.playersContainer}>
+                    <div className={styles.cpusHealthPoints}>
+                        Computer's Health: {playersHealth}
+                    </div>
+                    <div className={styles.cpusHand}>Computer's Hand</div>
+                </div>
+                <CardSpot title={'Discard Pile'} />
             </div>
-            <div className={styles.playerGameBoard}>
-                <span className={styles.value}>
-                    Player's Health: {playersHealth}
-                </span>
-                <button onClick={handleDecrementPlayerHealth}>
-                    Attack Player
-                </button>
+
+            <button className={styles.playButton}>Play Round!</button>
+
+            <div className={styles.playersSide}>
+                <CardSpot title={'Deck'} />
+                <div className={styles.playersContainer}>
+                    <div className={styles.playersHand}>
+                        <div className={styles.cardsInHand}>asdf</div>
+                        <div className={styles.cardsPlayed}>asdf</div>
+                        <div>Player's Hand</div>
+                    </div>
+                    <div className={styles.playerStats}>
+                        <div>Player's Health: {playersHealth}</div>
+                        <div>Player's Action: 2</div>
+                    </div>
+                </div>
+                <CardSpot title={'Discard Pile'} />
             </div>
         </div>
     )

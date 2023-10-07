@@ -9,10 +9,6 @@ export default function GameBoard() {
         <div className={styles.App}>
             <header className={styles.AppHeader}>
                 <PlayerHealth />
-                <div className={styles.deckContainer}>
-                    {/* <PlayerDeck />
-                    <ComputerDeck /> */}
-                </div>
             </header>
         </div>
     )
