@@ -7,7 +7,7 @@ import {
     playerHealth,
     cpuHealth,
 } from '../../features/player/playerSlice'
-import styles from '../../features/counter/Counter.module.css'
+import styles from '../../App.module.css'
 
 export function PlayerHealth() {
     const playersHealth = useAppSelector(playerHealth)
@@ -23,13 +23,19 @@ export function PlayerHealth() {
     }
 
     return (
-        <>
-            <span className={styles.value}>
-                Player's Health: {playersHealth}
-            </span>
-            <button onClick={handleDecrementPlayerHealth}>Attack Player</button>
-            <span className={styles.value}>CPU's Health: {cpusHealth}</span>
-            <button onClick={handleDecrementCPUHealth}>Attack CPU</button>
-        </>
+        <div className={styles.gameBoard}>
+            <div className={styles.cpuGameBoard}>
+                <span className={styles.value}>CPU's Health: {cpusHealth}</span>
+                <button onClick={handleDecrementCPUHealth}>Attack CPU</button>
+            </div>
+            <div className={styles.playerGameBoard}>
+                <span className={styles.value}>
+                    Player's Health: {playersHealth}
+                </span>
+                <button onClick={handleDecrementPlayerHealth}>
+                    Attack Player
+                </button>
+            </div>
+        </div>
     )
 }
