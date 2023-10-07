@@ -1,5 +1,5 @@
 import React from 'react'
-import styles from '../Cards/Card.module.css'
+import styles from '../../css/Card.module.css'
 
 interface CardProps {
     id?: number

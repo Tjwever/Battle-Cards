@@ -1,0 +1,62 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+  }
+  
+.App {
+    text-align: center;
+    font-size: calc(10px + 2vmin);
+}
+  
+.playButton {
+    padding: 30px;
+    border-radius: 20px;
+    border: none;
+    box-shadow: -2px 2px 2px rgba(0, 0, 0, 0.2);
+    background-color: #4de76e;
+    font-size: 1.2em;
+    color: #fcfcfc;
+    cursor: pointer;
+}
+  
+.gameBoard {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.playersSide {
+    height: 400px;
+    width: 100%;
+    padding: 0 15%;
+    border: 1px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10%;
+}
+
+/* TODO:  Delete section when refactored */
+.playersContainer {
+    width: 30%;
+    height: 300px;
+}
+
+.cpusHand, .cpusHealthPoints {
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    width: 100%;
+  }
+
+  .cpusHand {
+    height: 75%;
+  }
+
+  .cpusHealthPoints {
+    height: 25%;
+  }
+/* TODO:  Delete section when refactored */

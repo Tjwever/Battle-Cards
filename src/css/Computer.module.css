@@ -1,0 +1,74 @@
+.playersSide {
+    height: 400px;
+    width: 100%;
+    padding: 0 15%;
+    border: 1px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10%;
+  }
+  
+  .playersDeck {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .playersContainer {
+    width: 30%;
+    height: 300px;
+  }
+  
+  .playersDiscardPile {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .playersHand, .playerStats {
+    display: flex;
+    justify-content: end;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+  
+  .cpusHand, .cpusHealthPoints {
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    width: 100%;
+  }
+  
+  .playerStats {
+    height: 25%;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .playersHand {
+    height: 75%;
+  }
+  
+  .cpusHealthPoints {
+    height: 25%;
+  }
+  
+  .cpusHand {
+    height: 75%;
+  }
+  
+  .playersDeck,
+  .playersDiscardPile {
+    height: 300px;
+    width: 300px;
+  }
+  
+  .cardVisual {
+    height: 300px;
+    width: 200px;
+    border: 3px dotted #514fdd;
+  }

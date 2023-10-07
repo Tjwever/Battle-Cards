@@ -1,4 +1,4 @@
-import styles from '../../App.module.css'
+import styles from '../../css/CardSpot.module.css'
 
 interface CardSpotProps {
     title: string
