@@ -7,7 +7,7 @@ interface CardSpotProps {
 const CardSpot: React.FC<CardSpotProps> = ({ title }) => {
     return (
         <div className={styles.playersDeck}>
-            <div>{title}</div>
+            <div className={styles.label}>{title}</div>
             <div className={styles.cardVisual}></div>
         </div>
     )

@@ -1,14 +1,41 @@
-.cardVisual {
-    height: 300px;
-    width: 200px;
-    border: 3px dotted #514fdd;
-  }
-
 .playersDeck {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 300px;
-    width: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.label {
+  font-family: "Cinzel", serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.cardVisual {
+  height: 200px;
+  width: 140px;
+  border: 2px dashed rgba(240, 192, 64, 0.15);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.02);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.cardVisual::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  background: radial-gradient(circle at center, rgba(240, 192, 64, 0.03) 0%, transparent 70%);
+}
+
+.cardVisual:hover {
+  border-color: rgba(240, 192, 64, 0.3);
+  background: rgba(255, 255, 255, 0.04);
+  box-shadow: 0 0 20px rgba(240, 192, 64, 0.05);
 }

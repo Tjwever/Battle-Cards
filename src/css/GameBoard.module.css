@@ -1,62 +1,103 @@
-* {
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-  }
-  
 .App {
-    text-align: center;
-    font-size: calc(10px + 2vmin);
+  text-align: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0f0e17 0%, #1a1a2e 50%, #16213e 100%);
 }
-  
-.playButton {
-    padding: 30px;
-    border-radius: 20px;
-    border: none;
-    box-shadow: -2px 2px 2px rgba(0, 0, 0, 0.2);
-    background-color: #4de76e;
-    font-size: 1.2em;
-    color: #fcfcfc;
-    cursor: pointer;
-}
-  
+
 .gameBoard {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 0;
 }
 
 .playersSide {
-    height: 400px;
-    width: 100%;
-    padding: 0 15%;
-    border: 1px solid black;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10%;
+  width: 100%;
+  padding: 20px 5%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4%;
+  background: rgba(255, 255, 255, 0.02);
+  border-top: 1px solid rgba(240, 192, 64, 0.08);
+  border-bottom: 1px solid rgba(240, 192, 64, 0.08);
 }
 
-/* TODO:  Delete section when refactored */
 .playersContainer {
-    width: 30%;
-    height: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
 }
 
-.cpusHand, .cpusHealthPoints {
-    display: flex;
-    justify-content: center;
-    align-items: start;
-    width: 100%;
-  }
+.cpusHand {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 220px;
+  gap: 10px;
+  padding: 16px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
 
-  .cpusHand {
-    height: 75%;
-  }
+.cpusHealthPoints {
+  font-family: "Cinzel", serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--accent-red);
+  text-shadow: 0 0 12px rgba(231, 76, 60, 0.4);
+  padding: 8px 20px;
+  background: rgba(231, 76, 60, 0.08);
+  border: 1px solid rgba(231, 76, 60, 0.2);
+  border-radius: 8px;
+}
 
-  .cpusHealthPoints {
-    height: 25%;
-  }
-/* TODO:  Delete section when refactored */
+.playButton {
+  padding: 16px 48px;
+  border-radius: 12px;
+  border: 2px solid var(--accent-gold);
+  background: linear-gradient(135deg, rgba(240, 192, 64, 0.15), rgba(240, 192, 64, 0.05));
+  font-family: "Cinzel", serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--accent-gold);
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 20px rgba(240, 192, 64, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.playButton::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(240, 192, 64, 0.1) 0%, transparent 70%);
+  animation: pulseGlow 3s ease-in-out infinite;
+}
+
+.playButton:hover {
+  background: linear-gradient(135deg, rgba(240, 192, 64, 0.3), rgba(240, 192, 64, 0.1));
+  box-shadow: 0 0 40px rgba(240, 192, 64, 0.3), 0 0 80px rgba(240, 192, 64, 0.1);
+  transform: scale(1.05);
+  letter-spacing: 5px;
+}
+
+.playButton:active {
+  transform: scale(0.98);
+  box-shadow: 0 0 15px rgba(240, 192, 64, 0.2);
+}
+
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.5; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
