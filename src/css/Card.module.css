@@ -1,35 +1,189 @@
 .cardContainer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap;
-    width: 500px;
-    border: 1px solid black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  max-width: 600px;
+  padding: 16px;
 }
 
 .card {
-    font-size: 1rem;
-    border: 1px solid black;
-    width: 170px;
-    height: 200px;
+  font-size: 0.85rem;
+  width: 150px;
+  height: 200px;
+  border-radius: 12px;
+  padding: 12px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(145deg, #1e2a4a 0%, #16213e 50%, #0f1729 100%);
+  border: 1px solid rgba(240, 192, 64, 0.15);
+  box-shadow:
+    0 4px 15px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  animation: cardEntrance 0.5s ease-out both;
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.05),
+    transparent
+  );
+  transition: left 0.6s ease;
+}
+
+.card:hover {
+  transform: translateY(-8px) scale(1.03);
+  border-color: rgba(240, 192, 64, 0.4);
+  box-shadow:
+    0 12px 30px rgba(0, 0, 0, 0.5),
+    0 0 20px rgba(240, 192, 64, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.card:hover::before {
+  left: 100%;
+}
+
+.card:active {
+  transform: translateY(-2px) scale(0.98);
+}
+
+.cardName {
+  font-family: "Cinzel", serif;
+  font-weight: 600;
+  font-size: 0.8rem;
+  color: var(--accent-gold);
+  text-align: center;
+  text-shadow: 0 0 8px rgba(240, 192, 64, 0.3);
 }
 
 .description {
-    font-size: 0.8rem;
-    font-weight: lighter;
+  font-size: 0.65rem;
+  font-weight: 300;
+  color: var(--text-secondary);
+  text-align: center;
+  line-height: 1.3;
 }
 
 .iconContainer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    height: 100px;
-    width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  height: 80px;
+  width: 100%;
+}
+
+.iconBG {
+  position: absolute;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(240, 192, 64, 0.1) 0%, transparent 70%);
 }
 
 .iconContainer img {
-    display: block;
-    width: 60px;
-    height: 60px;
+  display: block;
+  width: 50px;
+  height: 50px;
+  position: relative;
+  z-index: 1;
+  filter: brightness(0.9) contrast(1.1);
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.card:hover .iconContainer img {
+  transform: scale(1.15);
+  filter: brightness(1.1) contrast(1.2) drop-shadow(0 0 6px rgba(240, 192, 64, 0.4));
+}
+
+.cardStats {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  font-size: 0.7rem;
+  font-weight: 500;
+}
+
+.statAttack {
+  color: var(--accent-red);
+  text-shadow: 0 0 6px rgba(231, 76, 60, 0.3);
+}
+
+.statDefense {
+  color: var(--accent-blue);
+  text-shadow: 0 0 6px rgba(52, 152, 219, 0.3);
+}
+
+.statAP {
+  color: var(--accent-purple);
+  text-shadow: 0 0 6px rgba(155, 89, 182, 0.3);
+}
+
+/* Card type border accents */
+.attackCard {
+  border-color: rgba(231, 76, 60, 0.3);
+}
+.attackCard:hover {
+  border-color: rgba(231, 76, 60, 0.6);
+  box-shadow:
+    0 12px 30px rgba(0, 0, 0, 0.5),
+    0 0 20px rgba(231, 76, 60, 0.2);
+}
+
+.defenseCard {
+  border-color: rgba(52, 152, 219, 0.3);
+}
+.defenseCard:hover {
+  border-color: rgba(52, 152, 219, 0.6);
+  box-shadow:
+    0 12px 30px rgba(0, 0, 0, 0.5),
+    0 0 20px rgba(52, 152, 219, 0.2);
+}
+
+.buffCard {
+  border-color: rgba(46, 204, 113, 0.3);
+}
+.buffCard:hover {
+  border-color: rgba(46, 204, 113, 0.6);
+  box-shadow:
+    0 12px 30px rgba(0, 0, 0, 0.5),
+    0 0 20px rgba(46, 204, 113, 0.2);
+}
+
+.healCard {
+  border-color: rgba(155, 89, 182, 0.3);
+}
+.healCard:hover {
+  border-color: rgba(155, 89, 182, 0.6);
+  box-shadow:
+    0 12px 30px rgba(0, 0, 0, 0.5),
+    0 0 20px rgba(155, 89, 182, 0.2);
+}
+
+@keyframes cardEntrance {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
