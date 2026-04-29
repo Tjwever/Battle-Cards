@@ -1,0 +1,76 @@
+.handArea {
+    width: 100%;
+    padding: 16px;
+}
+
+.handSection,
+.playedSection {
+    margin-bottom: 16px;
+}
+
+.sectionTitle {
+    font-size: 1rem;
+    font-weight: bold;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.cardRow {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.cardButton {
+    background: none;
+    border: 2px solid transparent;
+    padding: 4px;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+}
+
+.cardButton.playable {
+    border-color: #4de76e;
+}
+
+.cardButton.playable:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 12px rgba(77, 231, 110, 0.3);
+}
+
+.cardButton.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.playedCard {
+    opacity: 0.8;
+    border: 2px dashed #888;
+    border-radius: 8px;
+    padding: 4px;
+}
+
+.drawButton {
+    display: block;
+    margin: 12px auto 0;
+    padding: 10px 24px;
+    border-radius: 8px;
+    border: 2px solid #4de76e;
+    background: transparent;
+    color: inherit;
+    font-size: 0.9rem;
+    font-weight: bold;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: background-color 0.2s, transform 0.2s;
+}
+
+.drawButton:hover {
+    background-color: rgba(77, 231, 110, 0.15);
+    transform: scale(1.05);
+}

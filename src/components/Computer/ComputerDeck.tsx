@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import { useAppSelector, useAppDispatch } from '../../app/hooks'
 
-import styles from '../Cards/Card.module.css'
-import { cpuShuffleDeck } from '../../features/cards/cardSlice'
+import styles from '../../css/Card.module.css'
+import { shuffleCpuDeck } from '../../features/cards/cardSlice'
 import Card from '../Cards/Card'
 
 export function ComputerDeck() {
@@ -10,17 +10,24 @@ export function ComputerDeck() {
     const deck = useAppSelector((state) => state.card.computerDeck)
 
     useEffect(() => {
-        dispatch(cpuShuffleDeck())
+        dispatch(shuffleCpuDeck())
     }, [])
 
     return (
-        <>
-            <div className={styles.cardContainer}>
+        <div className={styles.cardContainer}>
             <h1>Computer's Deck</h1>
-                {deck.map((card) => (
-                    <Card key={card.id} name={card.name} description={card.description} art={card.art}/>
-                ))}
-            </div>
-        </>
+            {deck.map((card) => (
+                <Card
+                    key={card.id}
+                    name={card.name}
+                    description={card.description}
+                    art={card.art}
+                    action_type={card.action_type}
+                    attack={card.attack}
+                    defense={card.defense}
+                    action_points={card.action_points}
+                />
+            ))}
+        </div>
     )
 }

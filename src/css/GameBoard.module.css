@@ -2,24 +2,60 @@
     padding: 0;
     margin: 0;
     box-sizing: border-box;
-  }
-  
+}
+
 .App {
     text-align: center;
     font-size: calc(10px + 2vmin);
 }
-  
+
+.startScreen,
+.gameOverScreen {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+}
+
+.winnerText {
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.roundIndicator {
+    padding: 8px;
+    font-size: 1rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
 .playButton {
-    padding: 30px;
-    border-radius: 20px;
+    padding: 16px 40px;
+    border-radius: 12px;
     border: none;
     box-shadow: -2px 2px 2px rgba(0, 0, 0, 0.2);
     background-color: #4de76e;
     font-size: 1.2em;
     color: #fcfcfc;
     cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    transition: transform 0.2s, box-shadow 0.2s;
 }
-  
+
+.playButton:hover:not(:disabled) {
+    transform: scale(1.05);
+    box-shadow: 0 4px 16px rgba(77, 231, 110, 0.4);
+}
+
+.playButton:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
 .gameBoard {
     min-height: 100vh;
     display: flex;
@@ -29,34 +65,65 @@
 }
 
 .playersSide {
-    height: 400px;
     width: 100%;
-    padding: 0 15%;
-    border: 1px solid black;
+    padding: 16px 15%;
+    border: 1px solid #ddd;
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 10%;
 }
 
-/* TODO:  Delete section when refactored */
 .playersContainer {
     width: 30%;
-    height: 300px;
+    min-height: 150px;
 }
 
-.cpusHand, .cpusHealthPoints {
+.cpusHand,
+.cpusHealthPoints {
     display: flex;
     justify-content: center;
-    align-items: start;
+    align-items: center;
     width: 100%;
-  }
+    padding: 8px;
+}
 
-  .cpusHand {
-    height: 75%;
-  }
+.cpusHand {
+    font-size: 0.9rem;
+    opacity: 0.7;
+}
 
-  .cpusHealthPoints {
-    height: 25%;
-  }
-/* TODO:  Delete section when refactored */
+.middleSection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 16px;
+}
+
+.apDisplay {
+    font-size: 1rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.revealSection {
+    width: 100%;
+    padding: 12px;
+    text-align: center;
+}
+
+.revealTitle {
+    font-size: 0.9rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+}
+
+.revealCards {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
