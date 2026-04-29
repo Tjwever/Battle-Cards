@@ -6,6 +6,7 @@ import {
     cpuDrawCards,
     cpuPlayCard,
     discardPlayedCards,
+    resetCards,
     Card,
 } from '../cards/cardSlice'
 import {
@@ -30,6 +31,7 @@ import {
 export const initGame = (): AppThunk => (dispatch) => {
     dispatch(resetGame())
     dispatch(resetPlayers())
+    dispatch(resetCards())
     dispatch(shufflePlayerDeck())
     dispatch(shuffleCpuDeck())
     dispatch(startGame())
@@ -200,7 +202,9 @@ function resolveCombat(
         playerHeals.length === 0 &&
         cpuHeals.length === 0 &&
         playerBuffs.length === 0 &&
-        cpuBuffs.length === 0
+        cpuBuffs.length === 0 &&
+        playerDefenses.length === 0 &&
+        cpuDefenses.length === 0
     ) {
         log.push('Neither side played any cards')
     }
