@@ -8,15 +8,33 @@
 }
 
 .card {
-    font-size: 1rem;
-    border: 1px solid black;
-    width: 170px;
-    height: 200px;
+    font-size: 0.8rem;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    width: 140px;
+    min-height: 180px;
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.cardName {
+    font-weight: bold;
+    font-size: 0.85rem;
+    text-align: center;
 }
 
 .description {
-    font-size: 0.8rem;
+    font-size: 0.7rem;
     font-weight: lighter;
+    text-align: center;
 }
 
 .iconContainer {
@@ -24,12 +42,43 @@
     justify-content: center;
     align-items: center;
     position: relative;
-    height: 100px;
+    height: 60px;
     width: 100%;
 }
 
 .iconContainer img {
     display: block;
-    width: 60px;
-    height: 60px;
+    width: 48px;
+    height: 48px;
+}
+
+.cardStats {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    font-size: 0.7rem;
+    font-weight: bold;
+    padding-top: 4px;
+    border-top: 1px solid #eee;
+}
+
+.statAttack {
+    color: #e74c3c;
+}
+
+.statDefense {
+    color: #3498db;
+}
+
+.statAP {
+    color: #9b59b6;
+}
+
+.cardType {
+    text-align: center;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    opacity: 0.6;
+    padding-top: 2px;
 }
