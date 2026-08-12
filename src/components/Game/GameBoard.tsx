@@ -12,7 +12,7 @@ import {
     selectComputerDiscardPile,
     selectComputerCardsPlayed,
 } from '../../features/cards/cardSlice'
-import { initGame, playRound } from '../../features/game/gameThunks'
+import { initGame, playRound, advanceToNextRound } from '../../features/game/gameThunks'
 import { PlayerStats } from '../Player/PlayerStats'
 import PlayerHand from '../Player/PlayerHand'
 import RoundLog from './RoundLog'
@@ -41,6 +41,11 @@ export default function GameBoard() {
     const handlePlayRound = () => {
         if (phase !== 'playerTurn') return
         dispatch(playRound())
+    }
+
+    const handleNextRound = () => {
+        if (phase !== 'roundEnd') return
+        dispatch(advanceToNextRound())
     }
 
     if (phase === 'idle') {
@@ -132,13 +137,22 @@ export default function GameBoard() {
                 )}
 
                 <div className={styles.middleSection}>
-                    <button
-                        className={styles.playButton}
-                        onClick={handlePlayRound}
-                        disabled={phase !== 'playerTurn'}
-                    >
-                        Play Round
-                    </button>
+                    {phase === 'roundEnd' ? (
+                        <button
+                            className={styles.playButton}
+                            onClick={handleNextRound}
+                        >
+                            Continue
+                        </button>
+                    ) : (
+                        <button
+                            className={styles.playButton}
+                            onClick={handlePlayRound}
+                            disabled={phase !== 'playerTurn'}
+                        >
+                            Play Round
+                        </button>
+                    )}
                     <div className={styles.apDisplay}>AP: {ap}</div>
                 </div>
 

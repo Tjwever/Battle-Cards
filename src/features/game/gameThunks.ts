@@ -281,7 +281,6 @@ export const playRound = (): AppThunk => (dispatch, getState) => {
         dispatch(addPendingAP({ amount: cpuAPGain, player: 'cpu' }))
     }
 
-    dispatch(discardPlayedCards())
     dispatch(endRound())
 
     const afterState = getState()
@@ -303,9 +302,14 @@ export const playRound = (): AppThunk => (dispatch, getState) => {
         dispatch(setGameOver('cpu'))
         return
     }
+}
 
+export const advanceToNextRound = (): AppThunk => (dispatch, getState) => {
+    dispatch(discardPlayedCards())
     dispatch(applyPendingAP())
-    dispatch(playerDrawCards(5 - afterState.card.playerHand.length))
-    dispatch(cpuDrawCards(5 - afterState.card.computerHand.length))
+
+    const state = getState()
+    dispatch(playerDrawCards(5 - state.card.playerHand.length))
+    dispatch(cpuDrawCards(5 - state.card.computerHand.length))
     dispatch(nextRound())
 }
