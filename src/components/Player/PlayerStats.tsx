@@ -8,15 +8,13 @@ export function PlayerStats() {
 
     return (
         <div className={styles.playersContainer}>
-            <div className={styles.playersHand}>
-                <div className={styles.cardsInHand}>Cards in Hand</div>
-                <div className={styles.cardsPlayed}>Cards Played</div>
-            </div>
             <div className={styles.playerStats}>
                 <div className={styles.healthDisplay}>
                     Health: {playersHealth}
                 </div>
-                <div className={styles.actionDisplay}>Action: {ap}</div>
+                <div className={styles.actionDisplay}>
+                    AP: {ap}
+                </div>
             </div>
         </div>
     )

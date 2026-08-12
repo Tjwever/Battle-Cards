@@ -13,6 +13,13 @@ interface CardProps {
     style?: React.CSSProperties
 }
 
+const typeClassMap: Record<string, string> = {
+    Attack: styles.attackCard,
+    Defense: styles.defenseCard,
+    Buff: styles.buffCard,
+    Heal: styles.healCard,
+}
+
 const Card: React.FC<CardProps> = ({
     name,
     description,
@@ -23,8 +30,10 @@ const Card: React.FC<CardProps> = ({
     action_points,
     style,
 }) => {
+    const typeClass = action_type ? typeClassMap[action_type] ?? '' : ''
+
     return (
-        <div className={styles.card} style={style}>
+        <div className={`${styles.card} ${typeClass}`} style={style}>
             <div className={styles.cardName}>{name}</div>
 
             <div className={styles.iconContainer}>
@@ -34,28 +43,18 @@ const Card: React.FC<CardProps> = ({
 
             <div className={styles.description}>{description}</div>
 
-            {(attack !== undefined ||
-                defense !== undefined ||
-                action_points !== undefined) && (
+            {(attack !== undefined || defense !== undefined || action_points !== undefined) && (
                 <div className={styles.cardStats}>
                     {attack !== undefined && attack > 0 && (
                         <span className={styles.statAttack}>ATK {attack}</span>
                     )}
                     {defense !== undefined && defense > 0 && (
-                        <span className={styles.statDefense}>
-                            DEF {defense}
-                        </span>
+                        <span className={styles.statDefense}>DEF {defense}</span>
                     )}
                     {action_points !== undefined && (
-                        <span className={styles.statAP}>
-                            AP {action_points}
-                        </span>
+                        <span className={styles.statAP}>AP {action_points}</span>
                     )}
                 </div>
-            )}
-
-            {action_type && (
-                <div className={styles.cardType}>{action_type}</div>
             )}
         </div>
     )

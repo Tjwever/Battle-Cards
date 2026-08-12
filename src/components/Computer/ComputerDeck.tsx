@@ -16,7 +16,7 @@ export function ComputerDeck() {
     return (
         <div className={styles.cardContainer}>
             <h1>Computer's Deck</h1>
-            {deck.map((card) => (
+            {deck.map((card, index) => (
                 <Card
                     key={card.id}
                     name={card.name}
@@ -26,6 +26,7 @@ export function ComputerDeck() {
                     attack={card.attack}
                     defense={card.defense}
                     action_points={card.action_points}
+                    style={{ animationDelay: `${index * 0.05}s` }}
                 />
             ))}
         </div>

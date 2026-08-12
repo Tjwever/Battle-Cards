@@ -1,40 +1,32 @@
 .playersContainer {
-    width: 30%;
-    min-height: 150px;
-}
-
-.playersHand {
-    height: 75%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
 }
 
 .playerStats {
-    display: flex;
-    gap: 16px;
-    justify-content: center;
-    align-items: center;
-    padding: 8px;
+  display: flex;
+  gap: 24px;
+  align-items: center;
+  padding: 12px 24px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .healthDisplay {
-    font-weight: bold;
-    color: #2ecc71;
+  font-family: "Cinzel", serif;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--accent-green);
+  text-shadow: 0 0 12px rgba(46, 204, 113, 0.4);
 }
 
 .actionDisplay {
-    font-weight: bold;
-    color: #9b59b6;
-}
-
-.playersHand {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 12px;
-    width: 100%;
-}
-
-.cardsInHand,
-.cardsPlayed {
-    font-size: 0.8rem;
-    opacity: 0.7;
+  font-family: "Cinzel", serif;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--accent-purple);
+  text-shadow: 0 0 12px rgba(155, 89, 182, 0.4);
 }

@@ -1,74 +1,81 @@
 .playersSide {
-    height: 400px;
-    width: 100%;
-    padding: 0 15%;
-    border: 1px solid black;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10%;
-  }
-  
-  .playersDeck {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .playersContainer {
-    width: 30%;
-    height: 300px;
-  }
-  
-  .playersDiscardPile {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .playersHand, .playerStats {
-    display: flex;
-    justify-content: end;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-  }
-  
-  .cpusHand, .cpusHealthPoints {
-    display: flex;
-    justify-content: center;
-    align-items: start;
-    width: 100%;
-  }
-  
-  .playerStats {
-    height: 25%;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .playersHand {
-    height: 75%;
-  }
-  
-  .cpusHealthPoints {
-    height: 25%;
-  }
-  
-  .cpusHand {
-    height: 75%;
-  }
-  
-  .playersDeck,
-  .playersDiscardPile {
-    height: 300px;
-    width: 300px;
-  }
-  
-  .cardVisual {
-    height: 300px;
-    width: 200px;
-    border: 3px dotted #514fdd;
-  }
+  width: 100%;
+  padding: 20px 5%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4%;
+  background: rgba(255, 255, 255, 0.02);
+  border-top: 1px solid rgba(240, 192, 64, 0.08);
+  border-bottom: 1px solid rgba(240, 192, 64, 0.08);
+}
+
+.playersDeck,
+.playersDiscardPile {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.playersContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.playersHand {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 220px;
+  gap: 10px;
+  padding: 16px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.playerStats {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+  padding: 12px 24px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.cpusHand {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 220px;
+  gap: 10px;
+  padding: 16px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.cpusHealthPoints {
+  font-family: "Cinzel", serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--accent-red);
+  text-shadow: 0 0 12px rgba(231, 76, 60, 0.4);
+  padding: 8px 20px;
+  background: rgba(231, 76, 60, 0.08);
+  border: 1px solid rgba(231, 76, 60, 0.2);
+  border-radius: 8px;
+}
+
+.cardVisual {
+  height: 200px;
+  width: 140px;
+  border: 2px dashed rgba(240, 192, 64, 0.15);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.02);
+}
