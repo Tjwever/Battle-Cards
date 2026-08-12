@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { useAppSelector, useAppDispatch } from '../../app/hooks'
 
 import styles from '../../css/Card.module.css'
-import { playerShuffleDeck } from '../../features/cards/cardSlice'
+import { shufflePlayerDeck } from '../../features/cards/cardSlice'
 import Card from '../Cards/Card'
 
 export function PlayerDeck() {
@@ -10,7 +10,7 @@ export function PlayerDeck() {
     const deck = useAppSelector((state) => state.card.playerDeck)
 
     useEffect(() => {
-        dispatch(playerShuffleDeck())
+        dispatch(shufflePlayerDeck())
     }, [])
 
     return (

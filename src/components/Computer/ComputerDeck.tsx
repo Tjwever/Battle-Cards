@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { useAppSelector, useAppDispatch } from '../../app/hooks'
 
 import styles from '../../css/Card.module.css'
-import { cpuShuffleDeck } from '../../features/cards/cardSlice'
+import { shuffleCpuDeck } from '../../features/cards/cardSlice'
 import Card from '../Cards/Card'
 
 export function ComputerDeck() {
@@ -10,7 +10,7 @@ export function ComputerDeck() {
     const deck = useAppSelector((state) => state.card.computerDeck)
 
     useEffect(() => {
-        dispatch(cpuShuffleDeck())
+        dispatch(shuffleCpuDeck())
     }, [])
 
     return (

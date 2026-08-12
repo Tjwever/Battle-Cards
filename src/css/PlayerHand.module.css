@@ -1,0 +1,82 @@
+.handArea {
+    width: 100%;
+    padding: 16px;
+}
+
+.handSection,
+.playedSection {
+    margin-bottom: 16px;
+}
+
+.sectionTitle {
+    font-family: "Cinzel", serif;
+    font-size: 1rem;
+    font-weight: bold;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--accent-gold);
+    text-shadow: 0 0 6px rgba(240, 192, 64, 0.3);
+}
+
+.cardRow {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.cardButton {
+    background: none;
+    border: 2px solid transparent;
+    padding: 4px;
+    cursor: pointer;
+    border-radius: 12px;
+    transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+}
+
+.cardButton.playable {
+    border-color: var(--accent-green);
+    box-shadow: 0 0 10px rgba(46, 204, 113, 0.2);
+}
+
+.cardButton.playable:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 6px 20px rgba(46, 204, 113, 0.3);
+}
+
+.cardButton.disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.playedCard {
+    opacity: 0.8;
+    border: 2px dashed rgba(240, 192, 64, 0.3);
+    border-radius: 12px;
+    padding: 4px;
+}
+
+.drawButton {
+    display: block;
+    margin: 12px auto 0;
+    padding: 10px 24px;
+    border-radius: 8px;
+    border: 2px solid var(--accent-gold);
+    background: transparent;
+    color: var(--accent-gold);
+    font-family: "Cinzel", serif;
+    font-size: 0.9rem;
+    font-weight: bold;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+}
+
+.drawButton:hover {
+    background: rgba(240, 192, 64, 0.1);
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(240, 192, 64, 0.2);
+}

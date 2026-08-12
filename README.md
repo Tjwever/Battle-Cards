@@ -91,40 +91,42 @@ npm run dev
 - [x] **Card data model** — `Card` interface with all required attributes (id, name, art, description, action_type, attack, defense, action_points)
 - [x] **Card types** — `Attack`, `Defense`, `Buff`, `Heal` enum
 - [x] **Card database** — 40 cards across all types (Light/Medium/Heavy Attack & Defense, Attack/Defense Buffs, Heals, AP Buffs)
-- [x] **Redux store** — configured with player, card, and counter slices
-- [x] **Player health state** — both player and CPU start at 10, with increment/decrement actions
-- [x] **Deck state** — `playerDeck`, `computerDeck`, `playerCardsPlayed`, `computerCardsPlayed`, `playerDiscardPile`, `computerDiscardPile`
+- [x] **Redux store** — configured with player, card, game, and counter slices
+- [x] **Player health state** — both player and CPU start at 10, with increment/decrement actions; health capped at 10
+- [x] **Deck state** — `playerDeck`, `computerDeck`, `playerHand`, `computerHand`, `playerCardsPlayed`, `computerCardsPlayed`, `playerDiscardPile`, `computerDiscardPile`
 - [x] **Deck shuffle** — Fisher-Yates shuffle for both player and CPU decks
-- [x] **Game board layout** — Deck spots, Discard Pile spots, health display, "Play Round!" button
-- [x] **Card component** — renders name, art, and description
+- [x] **Game board layout** — Start screen, game board with Deck/Discard spots, health display, round indicator, battle log, game over screen
+- [x] **Card component** — renders name, art, description, ATK/DEF/AP stats, and card type
 - [x] **PlayerDeck / ComputerDeck** — shuffle on mount and display all cards
 - [x] **CI pipeline** — GitHub Actions workflow runs type-check and tests on PRs to master
+- [x] **Player Hand** — draw cards from Deck to Hand (max 5), `PlayerHand` component with clickable cards
+- [x] **Play cards from hand** — select and play cards from hand using AP; cards move to Cards Played zone
+- [x] **Action Points in state** — Redux-managed AP for both player and CPU; AP Buff cards cost 0 AP; pending AP applies next round
+- [x] **Turn / round resolution** — simultaneous play and reveal; CPU plays cards when Turn button is pressed
+- [x] **Combat resolution** — Attack targets Defense first, overflow hits health; buffs add to attack/defense power
+- [x] **Health cap at 10** — `incrementHealth` clamps to max 10
+- [x] **Game over condition** — checks for health reaching 0 after each round; declares winner
+- [x] **Discard → Deck reshuffle** — when Deck is empty during draw, Discard Pile reshuffles back into Deck
+- [x] **CPU AI** — greedy card selection: sorts by cost, plays as many cards as AP allows
+- [x] **Start game flow** — shuffles decks, deals 3 cards to each player, sets 2 AP, restricts first-round draws
+- [x] **Buff card logic** — attack buffs add to total attack, defense buffs add to total defense, AP buffs grant +1 AP next round
+- [x] **Heal card logic** — heals parsed from card description, applied with health cap
+- [x] **Game slice** — `gameSlice.ts` manages game phases (idle, starting, playerTurn, resolving, roundEnd, gameOver), round counter, winner, and battle log
+- [x] **Battle log** — `RoundLog` component displays combat results after each round
 
 ### Not Yet Implemented
 
-- [ ] **Player Hand** — draw cards from Deck to Hand (max 5); `PlayerHand.tsx` exists but is empty
-- [ ] **Play cards from hand** — select and play cards from hand using AP
-- [ ] **Action Points in state** — currently hardcoded to "2" in UI; needs Redux state management
-- [ ] **Turn / round resolution** — simultaneous reveal and damage calculation
-- [ ] **Combat resolution** — Attack vs Defense priority, overflow damage to health
-- [ ] **Health cap at 10** — `incrementHealth` doesn't clamp to max
-- [ ] **Game over condition** — no check for health reaching 0
-- [ ] **Discard → Deck reshuffle** — when Deck is empty, reshuffle Discard Pile back
-- [ ] **CPU AI** — computer card selection logic
-- [ ] **Start game flow** — deal 3 cards, set 2 AP, restrict first-round draws
-- [ ] **Buff card logic** — applying attack/defense buffs, AP buffs, debuffs
-- [ ] **Face-down / reveal mechanic** — cards played hidden until Turn button is pressed
-- [ ] **Game slice** — `gameSlice.ts`, `gameActions.ts`, `gameReducer.ts` exist but are empty
-- [ ] **Player Discard component** — `PlayerDiscard.tsx` exists but is empty
+- [ ] **Face-down / reveal mechanic** — cards are currently revealed immediately; spec calls for hidden play until Turn button
+- [ ] **Player Discard component** — `PlayerDiscard.tsx` exists but is empty; discard pile contents not viewable in UI
 
 ### Logic Needed (per spec)
 
-- [ ] Shuffle method for randomizing deck
+- [x] ~~Shuffle method for randomizing deck~~ (implemented in `cardSlice.ts`)
 - [x] ~~Method for randomizing cards in the Deck~~ (implemented in `cardSlice.ts`)
-- [ ] Method for drawing cards from Deck to Hand
-- [ ] Method for selecting and playing cards from Hand to Cards Played
-- [ ] Method to reshuffle Discard Pile back into Deck when Deck is empty
-- [ ] Turn button logic: compare Player's Cards Played vs CPU's Cards Played, calculate damage
+- [x] ~~Method for drawing cards from Deck to Hand~~ (`playerDrawCards` / `cpuDrawCards` in `cardSlice.ts`)
+- [x] ~~Method for selecting and playing cards from Hand to Cards Played~~ (`playerPlayCard` / `cpuPlayCard` in `cardSlice.ts`)
+- [x] ~~Method to reshuffle Discard Pile back into Deck when Deck is empty~~ (auto-reshuffle in draw actions)
+- [x] ~~Turn button logic: compare Player's Cards Played vs CPU's Cards Played, calculate damage~~ (`resolveCombat` in `gameThunks.ts`)
 
 ## Future Ideas
 
