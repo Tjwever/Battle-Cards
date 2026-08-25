@@ -1,5 +1,5 @@
 import { CardType } from './cardTypes'
-import { Card } from '../features/cards/cardSlice'
+import type { Card } from '../features/cards/cardSlice'
 
 const cardsData: Card[] = [
     // Attack Cards
