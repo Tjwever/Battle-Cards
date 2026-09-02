@@ -4,6 +4,8 @@ import cardReducer, {
     shufflePlayerDeck,
     shuffleCpuDeck,
     resetCards,
+    MAX_HAND_SIZE,
+    INITIAL_DRAW_COUNT,
 } from './cardSlice'
 import type { CardState, Card } from './cardSlice'
 import cardsData from '../../app/cardsData'
@@ -144,6 +146,41 @@ describe('cardSlice — Hand Management (Milestone 1)', () => {
             expect(result.playerHand).toHaveLength(0)
             expect(result.playerDeck).toHaveLength(0)
         })
+
+        it('is a no-op when drawing 0 cards', () => {
+            const deck = [makeCard({ id: 1 }), makeCard({ id: 2 })]
+            const hand = [makeCard({ id: 10 })]
+            const state = makeState({ playerDeck: deck, playerHand: hand })
+
+            const result = cardReducer(state, playerDrawCards(0))
+
+            expect(result.playerHand).toEqual(hand)
+            expect(result.playerDeck).toEqual(deck)
+        })
+
+        it('does not reshuffle discard when hand is already full and deck is empty', () => {
+            const hand = [
+                makeCard({ id: 1 }),
+                makeCard({ id: 2 }),
+                makeCard({ id: 3 }),
+                makeCard({ id: 4 }),
+                makeCard({ id: 5 }),
+            ]
+            const discardPile = [makeCard({ id: 10 }), makeCard({ id: 11 })]
+            const state = makeState({
+                playerDeck: [],
+                playerHand: hand,
+                playerDiscardPile: discardPile,
+            })
+
+            expect(hand).toHaveLength(MAX_HAND_SIZE)
+
+            const result = cardReducer(state, playerDrawCards(2))
+
+            expect(result.playerHand).toHaveLength(MAX_HAND_SIZE)
+            expect(result.playerDiscardPile).toHaveLength(2)
+            expect(result.playerDeck).toHaveLength(0)
+        })
     })
 
     describe('cpuDrawCards', () => {
@@ -195,6 +232,49 @@ describe('cardSlice — Hand Management (Milestone 1)', () => {
             expect(result.computerHand).toHaveLength(1)
             expect(result.computerDiscardPile).toHaveLength(0)
             expect(result.computerDeck).toHaveLength(1)
+        })
+
+        it('reshuffles CPU discard pile mid-draw if deck runs out partway', () => {
+            const deck = [makeCard({ id: 1 })]
+            const discardPile = [
+                makeCard({ id: 2 }),
+                makeCard({ id: 3 }),
+                makeCard({ id: 4 }),
+            ]
+            const state = makeState({
+                computerDeck: deck,
+                computerDiscardPile: discardPile,
+            })
+
+            const result = cardReducer(state, cpuDrawCards(3))
+
+            expect(result.computerHand).toHaveLength(3)
+            expect(result.computerDiscardPile).toHaveLength(0)
+            // 1 from deck + 3 from discard = 4 total available, drew 3
+            expect(result.computerDeck).toHaveLength(1)
+        })
+
+        it('stops drawing when both CPU deck and discard are empty', () => {
+            const state = makeState({
+                computerDeck: [],
+                computerDiscardPile: [],
+            })
+
+            const result = cardReducer(state, cpuDrawCards(3))
+
+            expect(result.computerHand).toHaveLength(0)
+            expect(result.computerDeck).toHaveLength(0)
+        })
+
+        it('is a no-op when drawing 0 cards', () => {
+            const deck = [makeCard({ id: 1 }), makeCard({ id: 2 })]
+            const hand = [makeCard({ id: 10 })]
+            const state = makeState({ computerDeck: deck, computerHand: hand })
+
+            const result = cardReducer(state, cpuDrawCards(0))
+
+            expect(result.computerHand).toEqual(hand)
+            expect(result.computerDeck).toEqual(deck)
         })
     })
 
@@ -259,13 +339,17 @@ describe('cardSlice — Hand Management (Milestone 1)', () => {
             let state = cardReducer(undefined, resetCards())
             state = cardReducer(state, shufflePlayerDeck())
             state = cardReducer(state, shuffleCpuDeck())
-            state = cardReducer(state, playerDrawCards(3))
-            state = cardReducer(state, cpuDrawCards(3))
+            state = cardReducer(state, playerDrawCards(INITIAL_DRAW_COUNT))
+            state = cardReducer(state, cpuDrawCards(INITIAL_DRAW_COUNT))
 
-            expect(state.playerHand).toHaveLength(3)
-            expect(state.computerHand).toHaveLength(3)
-            expect(state.playerDeck).toHaveLength(cardsData.length - 3)
-            expect(state.computerDeck).toHaveLength(cardsData.length - 3)
+            expect(state.playerHand).toHaveLength(INITIAL_DRAW_COUNT)
+            expect(state.computerHand).toHaveLength(INITIAL_DRAW_COUNT)
+            expect(state.playerDeck).toHaveLength(
+                cardsData.length - INITIAL_DRAW_COUNT
+            )
+            expect(state.computerDeck).toHaveLength(
+                cardsData.length - INITIAL_DRAW_COUNT
+            )
         })
     })
 })

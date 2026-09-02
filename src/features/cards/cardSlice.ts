@@ -25,6 +25,9 @@ export interface CardState {
     computerDiscardPile: Card[]
 }
 
+export const MAX_HAND_SIZE = 5
+export const INITIAL_DRAW_COUNT = 3
+
 function shuffleArray(array: Card[]): Card[] {
     const shuffled = [...array]
     for (let i = shuffled.length - 1; i > 0; i--) {
@@ -57,7 +60,7 @@ export const cardSlice = createSlice({
         },
         playerDrawCards(state, action: PayloadAction<number>) {
             const count = action.payload
-            const maxDraw = 5 - state.playerHand.length
+            const maxDraw = MAX_HAND_SIZE - state.playerHand.length
             const toDraw = Math.min(count, maxDraw)
 
             for (let i = 0; i < toDraw; i++) {
@@ -72,7 +75,7 @@ export const cardSlice = createSlice({
         },
         cpuDrawCards(state, action: PayloadAction<number>) {
             const count = action.payload
-            const maxDraw = 5 - state.computerHand.length
+            const maxDraw = MAX_HAND_SIZE - state.computerHand.length
             const toDraw = Math.min(count, maxDraw)
 
             for (let i = 0; i < toDraw; i++) {
@@ -113,14 +116,9 @@ export const cardSlice = createSlice({
         },
         resetCards() {
             return {
+                ...initialState,
                 playerDeck: [...cardsData],
                 computerDeck: [...cardsData],
-                playerHand: [],
-                computerHand: [],
-                playerCardsPlayed: [],
-                computerCardsPlayed: [],
-                playerDiscardPile: [],
-                computerDiscardPile: [],
             }
         },
     },
