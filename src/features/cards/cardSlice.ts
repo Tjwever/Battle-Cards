@@ -35,8 +35,8 @@ function shuffleArray(array: Card[]): Card[] {
 }
 
 const initialState: CardState = {
-    playerDeck: cardsData,
-    computerDeck: cardsData,
+    playerDeck: [...cardsData],
+    computerDeck: [...cardsData],
     playerHand: [],
     computerHand: [],
     playerCardsPlayed: [],
@@ -112,7 +112,16 @@ export const cardSlice = createSlice({
             state.computerCardsPlayed = []
         },
         resetCards() {
-            return initialState
+            return {
+                playerDeck: [...cardsData],
+                computerDeck: [...cardsData],
+                playerHand: [],
+                computerHand: [],
+                playerCardsPlayed: [],
+                computerCardsPlayed: [],
+                playerDiscardPile: [],
+                computerDiscardPile: [],
+            }
         },
     },
 })
