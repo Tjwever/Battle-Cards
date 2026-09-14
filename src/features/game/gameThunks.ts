@@ -28,6 +28,7 @@ import {
 } from './gameSlice'
 import { resolveCombat, apCostOf } from './combat'
 import { STRATEGIES } from './ai'
+import { recordWin, recordLoss } from './statsSlice'
 import { getDeck } from '../../app/decks'
 import { MAX_HEALTH } from '../../app/gameConfig'
 
@@ -139,16 +140,19 @@ export const revealAndResolve = (): AppThunk => (dispatch, getState) => {
 
     if (cHealth <= 0 && pHealth <= 0) {
         dispatch(addRoundLog('Both players eliminated — CPU wins by tiebreaker!'))
+        dispatch(recordLoss())
         dispatch(setGameOver('cpu'))
         return
     }
     if (cHealth <= 0) {
         dispatch(addRoundLog('CPU has been defeated!'))
+        dispatch(recordWin())
         dispatch(setGameOver('player'))
         return
     }
     if (pHealth <= 0) {
         dispatch(addRoundLog('Player has been defeated!'))
+        dispatch(recordLoss())
         dispatch(setGameOver('cpu'))
         return
     }

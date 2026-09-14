@@ -15,6 +15,7 @@ import {
     setDifficulty,
 } from '../../features/game/setupSlice'
 import { DECK_LIST, DECK_IDS, DECKS } from '../../app/decks'
+import { selectStats } from '../../features/game/statsSlice'
 import {
     selectPlayerDeck,
     selectPlayerDiscardPile,
@@ -51,6 +52,7 @@ export default function GameBoard() {
     const playerDeckId = useAppSelector(selectPlayerDeckId)
     const cpuDeckId = useAppSelector(selectCpuDeckId)
     const difficulty = useAppSelector(selectDifficulty)
+    const stats = useAppSelector(selectStats)
 
     const handleStartGame = () => {
         // Player keeps their chosen deck; the CPU is dealt a random deck.
@@ -76,6 +78,9 @@ export default function GameBoard() {
                 <div className={styles.startScreen}>
                     <h1>Battle Cards</h1>
                     <p>A card game of strategy and combat</p>
+                    <div className={styles.record}>
+                        Record — Wins: {stats.wins} · Losses: {stats.losses}
+                    </div>
                     <div className={styles.deckSelectTitle}>Choose your deck</div>
                     <div className={styles.deckOptions}>
                         {DECK_LIST.map((deck) => {
@@ -143,6 +148,9 @@ export default function GameBoard() {
                         Final Score — You: {playersHealth} HP | CPU:{' '}
                         {cpusHealth} HP
                     </p>
+                    <div className={styles.record}>
+                        Record — Wins: {stats.wins} · Losses: {stats.losses}
+                    </div>
                     <RoundLog />
                     <button
                         className={styles.playButton}

@@ -5,6 +5,7 @@ import playerReducer from './features/player/playerSlice'
 import cardReducer from './features/cards/cardSlice'
 import gameReducer from './features/game/gameSlice'
 import setupReducer from './features/game/setupSlice'
+import statsReducer from './features/game/statsSlice'
 import App from './App'
 
 // Fresh store per test for isolation (App uses the singleton store in prod).
@@ -15,6 +16,7 @@ function makeStore() {
             card: cardReducer,
             game: gameReducer,
             setup: setupReducer,
+            stats: statsReducer,
         },
     })
 }
