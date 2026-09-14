@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { useAppSelector, useAppDispatch } from '../../app/hooks'
 import { cpuHealth, playerHealth, playerAP } from '../../features/player/playerSlice'
 import {
@@ -28,6 +29,7 @@ import RoundLog from './RoundLog'
 import CardSpot from '../Cards/CardSpot'
 import Card from '../Cards/Card'
 import CardBack from '../Cards/CardBack'
+import DiscardViewer from './DiscardViewer'
 import styles from '../../css/GameBoard.module.css'
 
 export default function GameBoard() {
@@ -39,10 +41,13 @@ export default function GameBoard() {
     const round = useAppSelector(selectRound)
     const winner = useAppSelector(selectWinner)
     const playerDeckSize = useAppSelector(selectPlayerDeck).length
-    const playerDiscardSize = useAppSelector(selectPlayerDiscardPile).length
+    const playerDiscard = useAppSelector(selectPlayerDiscardPile)
     const cpuDeckSize = useAppSelector(selectComputerDeck).length
-    const cpuDiscardSize = useAppSelector(selectComputerDiscardPile).length
+    const cpuDiscard = useAppSelector(selectComputerDiscardPile)
+    const playerDiscardSize = playerDiscard.length
+    const cpuDiscardSize = cpuDiscard.length
     const cpuCardsPlayed = useAppSelector(selectComputerCardsPlayed)
+    const [openDiscard, setOpenDiscard] = useState<'player' | 'cpu' | null>(null)
     const playerDeckId = useAppSelector(selectPlayerDeckId)
     const cpuDeckId = useAppSelector(selectCpuDeckId)
     const difficulty = useAppSelector(selectDifficulty)
@@ -173,6 +178,8 @@ export default function GameBoard() {
                     <CardSpot
                         title={'Discard'}
                         count={cpuDiscardSize}
+                        onClick={() => setOpenDiscard('cpu')}
+                        ariaLabel={`View CPU discard pile (${cpuDiscardSize} cards)`}
                     />
                 </div>
 
@@ -238,11 +245,25 @@ export default function GameBoard() {
                     <CardSpot
                         title={'Discard'}
                         count={playerDiscardSize}
+                        onClick={() => setOpenDiscard('player')}
+                        ariaLabel={`View your discard pile (${playerDiscardSize} cards)`}
                     />
                 </div>
             </div>
 
             <PlayerHand />
+
+            {openDiscard && (
+                <DiscardViewer
+                    title={
+                        openDiscard === 'player'
+                            ? 'Your Discard Pile'
+                            : 'CPU Discard Pile'
+                    }
+                    cards={openDiscard === 'player' ? playerDiscard : cpuDiscard}
+                    onClose={() => setOpenDiscard(null)}
+                />
+            )}
         </div>
     )
 }

@@ -104,6 +104,21 @@ describe('App integration — full game flow (render path)', () => {
         ).toBeInTheDocument()
     })
 
+    it('opens the discard viewer after a round populates the pile', () => {
+        renderApp()
+        fireEvent.click(screen.getByRole('button', { name: /start game/i }))
+        fireEvent.click(screen.getByRole('button', { name: /^reveal$/i }))
+        fireEvent.click(screen.getByRole('button', { name: /continue/i }))
+
+        // CPU committed + discarded at least some cards; open its discard pile.
+        fireEvent.click(
+            screen.getByRole('button', { name: /view cpu discard pile/i })
+        )
+        expect(
+            screen.getByRole('dialog', { name: /cpu discard pile/i })
+        ).toBeInTheDocument()
+    })
+
     it('lets the player play an affordable card from hand, spending AP', () => {
         const store = renderApp()
         fireEvent.click(screen.getByRole('button', { name: /start game/i }))
