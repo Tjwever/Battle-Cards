@@ -1,6 +1,7 @@
 import { createRng, shuffle } from '../features/game/rng'
 import { drawCards } from '../features/game/deckOps'
-import { simulateGame, runSimulations, greedyAi } from './engine'
+import { simulateGame, runSimulations } from './engine'
+import { greedyStrategy } from '../features/game/ai'
 import cardsData from '../app/cardsData'
 import type { Card } from '../features/cards/cardSlice'
 
@@ -81,13 +82,13 @@ describe('deckOps.drawCards', () => {
 
 describe('sim engine', () => {
     it('simulateGame is deterministic for a fixed seed', () => {
-        const r1 = simulateGame(cardsData, cardsData, greedyAi, greedyAi, createRng(2024))
-        const r2 = simulateGame(cardsData, cardsData, greedyAi, greedyAi, createRng(2024))
+        const r1 = simulateGame(cardsData, cardsData, greedyStrategy, greedyStrategy, createRng(2024))
+        const r2 = simulateGame(cardsData, cardsData, greedyStrategy, greedyStrategy, createRng(2024))
         expect(r1).toEqual(r2)
     })
 
     it('produces a valid winner and a bounded round count', () => {
-        const res = simulateGame(cardsData, cardsData, greedyAi, greedyAi, createRng(5))
+        const res = simulateGame(cardsData, cardsData, greedyStrategy, greedyStrategy, createRng(5))
         expect(['A', 'B', 'draw']).toContain(res.winner)
         expect(res.rounds).toBeGreaterThan(0)
         expect(res.rounds).toBeLessThanOrEqual(300)

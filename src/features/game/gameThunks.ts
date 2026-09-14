@@ -26,8 +26,10 @@ import {
     addRoundLog,
     resetGame,
 } from './gameSlice'
-import { cpuSelectCards, resolveCombat, apCostOf } from './combat'
+import { resolveCombat, apCostOf } from './combat'
+import { STRATEGIES } from './ai'
 import { getDeck } from '../../app/decks'
+import { MAX_HEALTH } from '../../app/gameConfig'
 
 /**
  * The CPU commits its cards for the round face-down at the start of the
@@ -36,11 +38,15 @@ import { getDeck } from '../../app/decks'
  */
 export const cpuCommitCards = (): AppThunk => (dispatch, getState) => {
     const state = getState()
-    const cpuHand = state.card.computerHand
-    const cpuAPAvailable = state.player.cpu.actionPoints
-
-    const cpuSelected = cpuSelectCards(cpuHand, cpuAPAvailable)
-    for (const card of cpuSelected) {
+    const strategy = STRATEGIES[state.setup.difficulty]
+    const selected = strategy({
+        hand: state.card.computerHand,
+        ap: state.player.cpu.actionPoints,
+        selfHealth: state.player.cpu.health,
+        opponentHealth: state.player.player.health,
+        maxHealth: MAX_HEALTH,
+    })
+    for (const card of selected) {
         const cost = apCostOf(card)
         dispatch(cpuPlayCard(card.id))
         if (cost > 0) {

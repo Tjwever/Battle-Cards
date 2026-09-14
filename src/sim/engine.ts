@@ -1,7 +1,8 @@
 import type { Card } from '../features/cards/cardSlice'
-import { resolveCombat, apCostOf, cpuSelectCards } from '../features/game/combat'
+import { resolveCombat, apCostOf } from '../features/game/combat'
 import { drawCards } from '../features/game/deckOps'
 import { shuffle, type Rng } from '../features/game/rng'
+import { greedyStrategy, type AiStrategy } from '../features/game/ai'
 import {
     MAX_HEALTH,
     STARTING_AP,
@@ -9,14 +10,7 @@ import {
     MAX_HAND_SIZE,
 } from '../app/gameConfig'
 
-/**
- * A CPU/AI strategy: given the current hand and available AP, choose which
- * cards to commit this round. Must only return an affordable subset.
- */
-export type AiStrategy = (hand: Card[], ap: number) => Card[]
-
-/** Baseline greedy strategy (cheapest-first) — reuses the game's cpuSelectCards. */
-export const greedyAi: AiStrategy = (hand, ap) => cpuSelectCards(hand, ap)
+export type { AiStrategy } from '../features/game/ai'
 
 interface SimPlayer {
     health: number
@@ -83,8 +77,8 @@ function upkeep(player: SimPlayer, played: Card[], rng: Rng): void {
 export function simulateGame(
     deckA: Card[],
     deckB: Card[],
-    aiA: AiStrategy = greedyAi,
-    aiB: AiStrategy = greedyAi,
+    aiA: AiStrategy = greedyStrategy,
+    aiB: AiStrategy = greedyStrategy,
     rng: Rng = Math.random,
     maxRounds = 300
 ): SimResult {
@@ -99,8 +93,26 @@ export function simulateGame(
     while (round < maxRounds) {
         round++
 
-        const playedA = commit(A, aiA(A.hand, A.ap))
-        const playedB = commit(B, aiB(B.hand, B.ap))
+        const playedA = commit(
+            A,
+            aiA({
+                hand: A.hand,
+                ap: A.ap,
+                selfHealth: A.health,
+                opponentHealth: B.health,
+                maxHealth: MAX_HEALTH,
+            })
+        )
+        const playedB = commit(
+            B,
+            aiB({
+                hand: B.hand,
+                ap: B.ap,
+                selfHealth: B.health,
+                opponentHealth: A.health,
+                maxHealth: MAX_HEALTH,
+            })
+        )
         tally(playedA)
         tally(playedB)
 
@@ -151,8 +163,8 @@ export function runSimulations(
     deckB: Card[],
     games: number,
     makeRng: (gameIndex: number) => Rng,
-    aiA: AiStrategy = greedyAi,
-    aiB: AiStrategy = greedyAi
+    aiA: AiStrategy = greedyStrategy,
+    aiB: AiStrategy = greedyStrategy
 ): SimStats {
     let aWins = 0
     let bWins = 0

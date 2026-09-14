@@ -8,8 +8,10 @@ import {
 import {
     selectPlayerDeckId,
     selectCpuDeckId,
+    selectDifficulty,
     setPlayerDeck,
     setCpuDeck,
+    setDifficulty,
 } from '../../features/game/setupSlice'
 import { DECK_LIST, DECK_IDS, DECKS } from '../../app/decks'
 import {
@@ -43,6 +45,7 @@ export default function GameBoard() {
     const cpuCardsPlayed = useAppSelector(selectComputerCardsPlayed)
     const playerDeckId = useAppSelector(selectPlayerDeckId)
     const cpuDeckId = useAppSelector(selectCpuDeckId)
+    const difficulty = useAppSelector(selectDifficulty)
 
     const handleStartGame = () => {
         // Player keeps their chosen deck; the CPU is dealt a random deck.
@@ -91,6 +94,24 @@ export default function GameBoard() {
                                 </button>
                             )
                         })}
+                    </div>
+                    <div className={styles.difficultyRow}>
+                        <span className={styles.difficultyLabel}>CPU:</span>
+                        {(['smart', 'greedy'] as const).map((d) => (
+                            <button
+                                key={d}
+                                type="button"
+                                aria-pressed={difficulty === d}
+                                className={`${styles.difficultyOption} ${
+                                    difficulty === d
+                                        ? styles.difficultyOptionSelected
+                                        : ''
+                                }`}
+                                onClick={() => dispatch(setDifficulty(d))}
+                            >
+                                {d === 'smart' ? 'Smart' : 'Basic'}
+                            </button>
+                        ))}
                     </div>
                     <button
                         className={styles.playButton}
