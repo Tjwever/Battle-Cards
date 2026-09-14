@@ -168,3 +168,14 @@ export const advanceToNextRound = (): AppThunk => (dispatch, getState) => {
     dispatch(nextRound())
     dispatch(cpuCommitCards())
 }
+
+/**
+ * Abandon the current game and return to the start / deck-select screen. Clears
+ * the board and combatants but preserves the win-loss record (stats slice). The
+ * reset idle state is what gets persisted, so a page refresh also starts fresh.
+ */
+export const returnToMenu = (): AppThunk => (dispatch) => {
+    dispatch(resetGame())
+    dispatch(resetPlayers())
+    dispatch(loadDecks({ player: [], computer: [] }))
+}

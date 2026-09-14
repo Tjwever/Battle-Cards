@@ -53,6 +53,18 @@ describe('App integration — full game flow (render path)', () => {
         expect(store.getState().setup.difficulty).toBe('smart')
     })
 
+    it('Restart returns to the start screen mid-game', () => {
+        renderApp()
+        fireEvent.click(screen.getByRole('button', { name: /start game/i }))
+        expect(screen.getByText(/round 1/i)).toBeInTheDocument()
+
+        fireEvent.click(screen.getByRole('button', { name: /restart/i }))
+        // back at the start / deck-select screen
+        expect(
+            screen.getByRole('button', { name: /start game/i })
+        ).toBeInTheDocument()
+    })
+
     it('lets the player choose a deck, which seeds the game', () => {
         const store = renderApp()
         // pick Lightning

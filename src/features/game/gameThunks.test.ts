@@ -4,8 +4,9 @@ import cardReducer from '../cards/cardSlice'
 import gameReducer from './gameSlice'
 import setupReducer from './setupSlice'
 import statsReducer from './statsSlice'
-import { initGame, revealAndResolve, advanceToNextRound } from './gameThunks'
+import { initGame, revealAndResolve, advanceToNextRound, returnToMenu } from './gameThunks'
 import { spendAP } from '../player/playerSlice'
+import { recordWin } from './statsSlice'
 
 function makeStore() {
     return configureStore({
@@ -77,6 +78,22 @@ describe('gameThunks — commit / reveal flow', () => {
         expect(
             s.card.computerHand.length + s.card.computerCardsPlayed.length
         ).toBeGreaterThan(0)
+    })
+
+    it('returnToMenu resets to the start screen (idle) and clears the board, preserving stats', () => {
+        const store = makeStore()
+        store.dispatch(recordWin()) // existing record to preserve
+        store.dispatch(initGame())
+        expect(store.getState().game.phase).toBe('playerTurn')
+
+        store.dispatch(returnToMenu())
+        const s = store.getState()
+        expect(s.game.phase).toBe('idle')
+        expect(s.card.playerHand).toHaveLength(0)
+        expect(s.card.playerDeck).toHaveLength(0)
+        expect(s.card.computerCardsPlayed).toHaveLength(0)
+        // win-loss record survives a restart
+        expect(s.stats.wins).toBe(1)
     })
 
     it('refills player AP every round so the player is never locked out (AP-reset bug regression)', () => {

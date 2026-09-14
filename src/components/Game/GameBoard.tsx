@@ -24,7 +24,7 @@ import {
     selectComputerDiscardPile,
     selectComputerCardsPlayed,
 } from '../../features/cards/cardSlice'
-import { initGame, revealAndResolve, advanceToNextRound } from '../../features/game/gameThunks'
+import { initGame, revealAndResolve, advanceToNextRound, returnToMenu } from '../../features/game/gameThunks'
 import { PlayerStats } from '../Player/PlayerStats'
 import PlayerHand from '../Player/PlayerHand'
 import RoundLog from './RoundLog'
@@ -72,6 +72,10 @@ export default function GameBoard() {
     const handleNextRound = () => {
         if (phase !== 'roundEnd') return
         dispatch(advanceToNextRound())
+    }
+
+    const handleRestart = () => {
+        dispatch(returnToMenu())
     }
 
     if (phase === 'idle') {
@@ -171,6 +175,13 @@ export default function GameBoard() {
             <div className={styles.matchup}>
                 You: {DECKS[playerDeckId].name} vs CPU: {DECKS[cpuDeckId].name}
             </div>
+            <button
+                type="button"
+                className={styles.restartButton}
+                onClick={handleRestart}
+            >
+                Restart
+            </button>
             <div className={styles.gameBoard}>
                 <div className={styles.playersSide}>
                     <CardSpot
