@@ -42,6 +42,17 @@ describe('App integration — full game flow (render path)', () => {
         ).toBeInTheDocument()
     })
 
+    it('shows the win-loss record and a difficulty toggle on the start screen', () => {
+        const store = renderApp()
+        expect(screen.getByText(/record — wins: 0 · losses: 0/i)).toBeInTheDocument()
+
+        // difficulty defaults to smart; toggling to Basic updates state
+        fireEvent.click(screen.getByRole('button', { name: /^basic$/i }))
+        expect(store.getState().setup.difficulty).toBe('greedy')
+        fireEvent.click(screen.getByRole('button', { name: /^smart$/i }))
+        expect(store.getState().setup.difficulty).toBe('smart')
+    })
+
     it('lets the player choose a deck, which seeds the game', () => {
         const store = renderApp()
         // pick Lightning
