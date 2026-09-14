@@ -55,17 +55,6 @@ const AB = (amount: number, ap: number, name: string): CardSpec => ({
     art: 'icons8-fist-100.png',
     description: `+${amount} attack to a played Attack card`,
 })
-const DB = (amount: number, ap: number, name: string): CardSpec => ({
-    name,
-    action_type: 'Buff',
-    effect: 'defenseBuff',
-    amount,
-    attack: 0,
-    defense: amount,
-    action_points: ap,
-    art: 'icons8-shield-90.png',
-    description: `+${amount} block to a played Defense card`,
-})
 const AP = (name: string): CardSpec => ({
     name,
     action_type: 'Buff',
@@ -123,16 +112,15 @@ const fire = buildDeck('fire', 'Fire', 'Aggressive — overwhelm with attacks.',
     ...rep(2, () => AP('Fire Surge')),
 ])
 
-// Ice — defensive: heavy defense and healing, with just enough offense to close.
-const ice = buildDeck('ice', 'Ice', 'Defensive — outlast with blocks and heals.', 200, [
-    ...rep(6, () => D(1, 1, 'Frost Guard')),
-    ...rep(6, () => D(2, 2, 'Ice Wall')),
-    ...rep(3, () => D(3, 3, 'Glacier')),
-    ...rep(3, () => DB(1, 2, 'Reinforce')),
-    ...rep(4, () => H(2, 2, 'Chill Mend')),
-    ...rep(2, () => H(5, 2, 'Frozen Renewal')),
-    ...rep(2, () => A(1, 1, 'Icicle')),
-    ...rep(2, () => A(2, 2, 'Frostbite')),
+// Ice — sustain midrange: unconditional healing (strong under face-down play,
+// where blind blocking is weak) plus reliable damage to close.
+const ice = buildDeck('ice', 'Ice', 'Sustain — outlast with heals, then close.', 200, [
+    ...rep(6, () => H(2, 2, 'Chill Mend')),
+    ...rep(3, () => H(5, 2, 'Frozen Renewal')),
+    ...rep(9, () => A(2, 2, 'Frostbite')),
+    ...rep(2, () => A(3, 3, 'Avalanche')),
+    ...rep(4, () => D(2, 2, 'Ice Wall')),
+    ...rep(4, () => D(1, 1, 'Frost Guard')),
     ...rep(2, () => AP('Cold Focus')),
 ])
 
@@ -143,13 +131,13 @@ const lightning = buildDeck(
     'Tempo — accelerate your AP and starve theirs.',
     300,
     [
-        ...rep(5, () => AP('Charge')),
+        ...rep(3, () => AP('Charge')),
         ...rep(4, () => DR(1, 2, 'Short Circuit')),
         ...rep(2, () => DR(2, 3, 'Overload')),
-        ...rep(6, () => A(1, 1, 'Spark')),
+        ...rep(8, () => A(1, 1, 'Spark')),
         ...rep(4, () => A(2, 2, 'Chain Bolt')),
-        ...rep(3, () => D(1, 1, 'Static Field')),
-        ...rep(3, () => AB(2, 1, 'Amplify')),
+        ...rep(4, () => D(1, 1, 'Static Field')),
+        ...rep(2, () => AB(2, 1, 'Amplify')),
         ...rep(3, () => H(2, 2, 'Recharge')),
     ]
 )

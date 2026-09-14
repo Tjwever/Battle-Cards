@@ -3,6 +3,7 @@ import cardsData from '../app/cardsData'
 import { DECK_LIST, getDeck } from '../app/decks'
 import { createRng } from '../features/game/rng'
 import { runSimulations } from './engine'
+import { greedyStrategy, smartStrategy } from '../features/game/ai'
 
 /** Parse `--flag value` / `--flag=value` from argv. */
 function arg(name: string, fallback: number): number {
@@ -20,8 +21,11 @@ function has(flag: string): boolean {
 
 const pct = (n: number) => `${(n * 100).toFixed(1)}%`
 
-function deckMatrix(games: number, seed: number) {
-    console.log('\n=== Deck-vs-Deck Matrix (A = row, greedy AI) ===')
+function deckMatrix(games: number, seed: number, smart: boolean) {
+    const strat = smart ? smartStrategy : greedyStrategy
+    console.log(
+        `\n=== Deck-vs-Deck Matrix (A = row, ${smart ? 'smart' : 'greedy'} AI) ===`
+    )
     console.log(`games per cell: ${games}   seed: ${seed}\n`)
     const header = ['        '].concat(
         DECK_LIST.map((d) => d.name.padStart(10))
@@ -34,9 +38,13 @@ function deckMatrix(games: number, seed: number) {
                 getDeck(a.id),
                 getDeck(b.id),
                 games,
-                (i) => createRng(seed + i)
+                (i) => createRng(seed + i),
+                strat,
+                strat
             )
-            row.push(pct(stats.aWinRate).padStart(10))
+            row.push(
+                `${pct(stats.aWinRate)}/${pct(stats.drawRate)}`.padStart(14)
+            )
         }
         console.log(row.join(''))
     }
@@ -48,7 +56,7 @@ function main() {
     const seed = arg('seed', 12345)
 
     if (has('matrix')) {
-        deckMatrix(arg('games', 500), seed)
+        deckMatrix(arg('games', 500), seed, has('smart'))
         return
     }
 
