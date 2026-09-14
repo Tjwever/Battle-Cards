@@ -1,5 +1,6 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { RootState } from '../../app/store'
+import type { PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit'
+import type { RootState } from '../../app/store'
 
 export interface PlayerState {
     player: { health: number; actionPoints: number; pendingAP: number }

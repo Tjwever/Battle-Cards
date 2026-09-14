@@ -128,3 +128,13 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+# >>> rvst-cli managed (do not edit this block) >>>
+.kiro/agents/
+.kiro/context/
+.kiro/hooks/
+.kiro/steering/
+.kiro/skills/
+.claude/
+rvst.yaml
+# <<< rvst-cli managed <<<

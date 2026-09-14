@@ -1,5 +1,6 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { RootState } from '../../app/store'
+import type { PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit'
+import type { RootState } from '../../app/store'
 import cardsData from '../../app/cardsData'
 
 export interface Card {
@@ -24,6 +25,9 @@ export interface CardState {
     computerDiscardPile: Card[]
 }
 
+export const MAX_HAND_SIZE = 5
+export const INITIAL_DRAW_COUNT = 3
+
 function shuffleArray(array: Card[]): Card[] {
     const shuffled = [...array]
     for (let i = shuffled.length - 1; i > 0; i--) {
@@ -34,8 +38,8 @@ function shuffleArray(array: Card[]): Card[] {
 }
 
 const initialState: CardState = {
-    playerDeck: cardsData,
-    computerDeck: cardsData,
+    playerDeck: [...cardsData],
+    computerDeck: [...cardsData],
     playerHand: [],
     computerHand: [],
     playerCardsPlayed: [],
@@ -56,7 +60,7 @@ export const cardSlice = createSlice({
         },
         playerDrawCards(state, action: PayloadAction<number>) {
             const count = action.payload
-            const maxDraw = 5 - state.playerHand.length
+            const maxDraw = MAX_HAND_SIZE - state.playerHand.length
             const toDraw = Math.min(count, maxDraw)
 
             for (let i = 0; i < toDraw; i++) {
@@ -71,7 +75,7 @@ export const cardSlice = createSlice({
         },
         cpuDrawCards(state, action: PayloadAction<number>) {
             const count = action.payload
-            const maxDraw = 5 - state.computerHand.length
+            const maxDraw = MAX_HAND_SIZE - state.computerHand.length
             const toDraw = Math.min(count, maxDraw)
 
             for (let i = 0; i < toDraw; i++) {
@@ -111,7 +115,11 @@ export const cardSlice = createSlice({
             state.computerCardsPlayed = []
         },
         resetCards() {
-            return initialState
+            return {
+                ...initialState,
+                playerDeck: [...cardsData],
+                computerDeck: [...cardsData],
+            }
         },
     },
 })

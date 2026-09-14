@@ -1,4 +1,6 @@
-import { AppThunk } from '../../app/store'
+import type { AppThunk } from '../../app/store'
+import type {
+    Card} from '../cards/cardSlice';
 import {
     shufflePlayerDeck,
     shuffleCpuDeck,
@@ -6,8 +8,7 @@ import {
     cpuDrawCards,
     cpuPlayCard,
     discardPlayedCards,
-    resetCards,
-    Card,
+    resetCards
 } from '../cards/cardSlice'
 import {
     resetPlayers,
