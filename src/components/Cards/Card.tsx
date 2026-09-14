@@ -38,7 +38,7 @@ const Card: React.FC<CardProps> = ({
 
             <div className={styles.iconContainer}>
                 <div className={styles.iconBG} />
-                <img src={`src/public/${art}`} alt={name} />
+                <img src={`/${art}`} alt={name} />
             </div>
 
             <div className={styles.description}>{description}</div>

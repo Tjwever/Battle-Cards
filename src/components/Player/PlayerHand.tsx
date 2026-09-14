@@ -9,6 +9,7 @@ import {
 } from '../../features/cards/cardSlice'
 import { playerAP, spendAP } from '../../features/player/playerSlice'
 import { selectGamePhase, selectRound } from '../../features/game/gameSlice'
+import { apCostOf } from '../../features/game/combat'
 import Card from '../Cards/Card'
 import styles from '../../css/PlayerHand.module.css'
 
@@ -29,13 +30,12 @@ export default function PlayerHand() {
         hand.length < 5 &&
         (deckSize > 0 || discardSize > 0)
 
-    const handlePlayCard = (cardId: number, apCost: number, isFreeAP: boolean) => {
+    const handlePlayCard = (cardId: number, cost: number) => {
         if (!canPlay) return
-        const effectiveCost = isFreeAP ? 0 : apCost
-        if (effectiveCost > ap) return
+        if (cost > ap) return
         dispatch(playerPlayCard(cardId))
-        if (effectiveCost > 0) {
-            dispatch(spendAP({ amount: effectiveCost, player: 'player' }))
+        if (cost > 0) {
+            dispatch(spendAP({ amount: cost, player: 'player' }))
         }
     }
 
@@ -50,11 +50,7 @@ export default function PlayerHand() {
                 <div className={styles.sectionTitle}>Your Hand</div>
                 <div className={styles.cardRow}>
                     {hand.map((card) => {
-                        const isFreeAP =
-                            card.action_type === 'Buff' &&
-                            card.attack === 0 &&
-                            card.defense === 0
-                        const cost = isFreeAP ? 0 : card.action_points
+                        const cost = apCostOf(card)
                         const affordable = cost <= ap
                         return (
                             <button
@@ -65,11 +61,7 @@ export default function PlayerHand() {
                                         : styles.disabled
                                 }`}
                                 onClick={() =>
-                                    handlePlayCard(
-                                        card.id,
-                                        card.action_points,
-                                        isFreeAP
-                                    )
+                                    handlePlayCard(card.id, cost)
                                 }
                                 disabled={!canPlay || !affordable}
                             >

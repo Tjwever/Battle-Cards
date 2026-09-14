@@ -1,6 +1,4 @@
 import type { AppThunk } from '../../app/store'
-import type {
-    Card} from '../cards/cardSlice';
 import {
     shufflePlayerDeck,
     shuffleCpuDeck,
@@ -28,6 +26,7 @@ import {
     addRoundLog,
     resetGame,
 } from './gameSlice'
+import { cpuSelectCards, resolveCombat, apCostOf } from './combat'
 
 export const initGame = (): AppThunk => (dispatch) => {
     dispatch(resetGame())
@@ -41,178 +40,6 @@ export const initGame = (): AppThunk => (dispatch) => {
     dispatch(beginPlayerTurn())
 }
 
-function cpuSelectCards(
-    hand: Card[],
-    availableAP: number
-): Card[] {
-    const sorted = [...hand].sort(
-        (a, b) => a.action_points - b.action_points
-    )
-    const selected: Card[] = []
-    let apLeft = availableAP
-
-    for (const card of sorted) {
-        const cost = card.action_type === 'Buff' && card.attack === 0 && card.defense === 0
-            ? 0
-            : card.action_points
-        if (cost <= apLeft) {
-            selected.push(card)
-            apLeft -= cost
-        }
-    }
-
-    return selected
-}
-
-function resolveCombat(
-    playerCards: Card[],
-    cpuCards: Card[]
-): {
-    playerDamage: number
-    cpuDamage: number
-    playerHeal: number
-    cpuHeal: number
-    playerAPGain: number
-    cpuAPGain: number
-    log: string[]
-} {
-    const log: string[] = []
-
-    const playerAttacks = playerCards.filter((c) => c.action_type === 'Attack')
-    const playerDefenses = playerCards.filter(
-        (c) => c.action_type === 'Defense'
-    )
-    const playerBuffs = playerCards.filter((c) => c.action_type === 'Buff')
-    const playerHeals = playerCards.filter((c) => c.action_type === 'Heal')
-
-    const cpuAttacks = cpuCards.filter((c) => c.action_type === 'Attack')
-    const cpuDefenses = cpuCards.filter((c) => c.action_type === 'Defense')
-    const cpuBuffs = cpuCards.filter((c) => c.action_type === 'Buff')
-    const cpuHeals = cpuCards.filter((c) => c.action_type === 'Heal')
-
-    let playerAttackBuff = 0
-    let playerDefenseBuff = 0
-    let playerAPGain = 0
-    for (const buff of playerBuffs) {
-        if (buff.attack > 0) {
-            playerAttackBuff += buff.attack
-            log.push(`Player buff: +${buff.attack} attack power`)
-        }
-        if (buff.defense > 0) {
-            playerDefenseBuff += buff.defense
-            log.push(`Player buff: +${buff.defense} defense power`)
-        }
-        if (buff.action_points === 0) {
-            playerAPGain += 1
-            log.push(`Player gains +1 AP for next round`)
-        }
-    }
-
-    let cpuAttackBuff = 0
-    let cpuDefenseBuff = 0
-    let cpuAPGain = 0
-    for (const buff of cpuBuffs) {
-        if (buff.attack > 0) {
-            cpuAttackBuff += buff.attack
-            log.push(`CPU buff: +${buff.attack} attack power`)
-        }
-        if (buff.defense > 0) {
-            cpuDefenseBuff += buff.defense
-            log.push(`CPU buff: +${buff.defense} defense power`)
-        }
-        if (buff.action_points === 0) {
-            cpuAPGain += 1
-            log.push(`CPU gains +1 AP for next round`)
-        }
-    }
-
-    let totalPlayerAttack = playerAttacks.reduce(
-        (sum, c) => sum + c.attack,
-        0
-    )
-    totalPlayerAttack += playerAttackBuff
-
-    let totalCpuDefense = cpuDefenses.reduce((sum, c) => sum + c.defense, 0)
-    totalCpuDefense += cpuDefenseBuff
-
-    let cpuDamage = 0
-    if (totalPlayerAttack > 0) {
-        if (totalCpuDefense > 0) {
-            const blocked = Math.min(totalPlayerAttack, totalCpuDefense)
-            log.push(
-                `Player attacks for ${totalPlayerAttack}, CPU blocks ${blocked}`
-            )
-            cpuDamage = Math.max(totalPlayerAttack - totalCpuDefense, 0)
-        } else {
-            cpuDamage = totalPlayerAttack
-            log.push(
-                `Player attacks for ${totalPlayerAttack} — no CPU defense!`
-            )
-        }
-    }
-
-    let totalCpuAttack = cpuAttacks.reduce((sum, c) => sum + c.attack, 0)
-    totalCpuAttack += cpuAttackBuff
-
-    let totalPlayerDefense = playerDefenses.reduce(
-        (sum, c) => sum + c.defense,
-        0
-    )
-    totalPlayerDefense += playerDefenseBuff
-
-    let playerDamage = 0
-    if (totalCpuAttack > 0) {
-        if (totalPlayerDefense > 0) {
-            const blocked = Math.min(totalCpuAttack, totalPlayerDefense)
-            log.push(
-                `CPU attacks for ${totalCpuAttack}, Player blocks ${blocked}`
-            )
-            playerDamage = Math.max(totalCpuAttack - totalPlayerDefense, 0)
-        } else {
-            playerDamage = totalCpuAttack
-            log.push(
-                `CPU attacks for ${totalCpuAttack} — no Player defense!`
-            )
-        }
-    }
-
-    if (cpuDamage > 0) log.push(`CPU takes ${cpuDamage} damage`)
-    if (playerDamage > 0) log.push(`Player takes ${playerDamage} damage`)
-
-    let playerHeal = playerHeals.reduce((sum, c) => sum + c.defense, 0)
-    if (playerHeal === 0) {
-        playerHeal = playerHeals.reduce((sum, c) => {
-            const healMatch = c.description.match(/Adds (\d+) to Players Health/)
-            return sum + (healMatch ? parseInt(healMatch[1], 10) : 0)
-        }, 0)
-    }
-    let cpuHeal = cpuHeals.reduce((sum, c) => sum + c.defense, 0)
-    if (cpuHeal === 0) {
-        cpuHeal = cpuHeals.reduce((sum, c) => {
-            const healMatch = c.description.match(/Adds (\d+) to Players Health/)
-            return sum + (healMatch ? parseInt(healMatch[1], 10) : 0)
-        }, 0)
-    }
-
-    if (playerHeal > 0) log.push(`Player heals ${playerHeal} HP`)
-    if (cpuHeal > 0) log.push(`CPU heals ${cpuHeal} HP`)
-
-    if (
-        playerAttacks.length === 0 &&
-        cpuAttacks.length === 0 &&
-        playerHeals.length === 0 &&
-        cpuHeals.length === 0 &&
-        playerBuffs.length === 0 &&
-        cpuBuffs.length === 0 &&
-        playerDefenses.length === 0 &&
-        cpuDefenses.length === 0
-    ) {
-        log.push('Neither side played any cards')
-    }
-
-    return { playerDamage, cpuDamage, playerHeal, cpuHeal, playerAPGain, cpuAPGain, log }
-}
-
 export const playRound = (): AppThunk => (dispatch, getState) => {
     const state = getState()
     const cpuHand = state.card.computerHand
@@ -223,12 +50,7 @@ export const playRound = (): AppThunk => (dispatch, getState) => {
 
     const cpuSelected = cpuSelectCards(cpuHand, cpuAPAvailable)
     for (const card of cpuSelected) {
-        const cost =
-            card.action_type === 'Buff' &&
-            card.attack === 0 &&
-            card.defense === 0
-                ? 0
-                : card.action_points
+        const cost = apCostOf(card)
         dispatch(cpuPlayCard(card.id))
         if (cost > 0) {
             dispatch(spendAP({ amount: cost, player: 'cpu' }))

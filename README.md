@@ -88,29 +88,29 @@ npm run dev
 
 ### Implemented
 
-- [x] **Card data model** — `Card` interface with all required attributes (id, name, art, description, action_type, attack, defense, action_points)
+- [x] **Card data model** — `Card` interface with all required attributes (id, name, art, description, action_type, attack, defense, action_points) plus an explicit `effect` discriminator and canonical `amount` used by combat
 - [x] **Card types** — `Attack`, `Defense`, `Buff`, `Heal` enum
 - [x] **Card database** — 40 cards across all types (Light/Medium/Heavy Attack & Defense, Attack/Defense Buffs, Heals, AP Buffs)
-- [x] **Redux store** — configured with player, card, game, and counter slices
+- [x] **Redux store** — configured with player, card, and game slices
 - [x] **Player health state** — both player and CPU start at 10, with increment/decrement actions; health capped at 10
 - [x] **Deck state** — `playerDeck`, `computerDeck`, `playerHand`, `computerHand`, `playerCardsPlayed`, `computerCardsPlayed`, `playerDiscardPile`, `computerDiscardPile`
 - [x] **Deck shuffle** — Fisher-Yates shuffle for both player and CPU decks
 - [x] **Game board layout** — Start screen, game board with Deck/Discard spots, health display, round indicator, battle log, game over screen
 - [x] **Card component** — renders name, art, description, ATK/DEF/AP stats, and card type
-- [x] **PlayerDeck / ComputerDeck** — shuffle on mount and display all cards
+- [x] **Pure combat module** — `resolveCombat` and `cpuSelectCards` live in `features/game/combat.ts` and are unit-tested in isolation
 - [x] **CI pipeline** — GitHub Actions workflow runs type-check and tests on PRs to master
 - [x] **Player Hand** — draw cards from Deck to Hand (max 5), `PlayerHand` component with clickable cards
 - [x] **Play cards from hand** — select and play cards from hand using AP; cards move to Cards Played zone
 - [x] **Action Points in state** — Redux-managed AP for both player and CPU; AP Buff cards cost 0 AP; pending AP applies next round
 - [x] **Turn / round resolution** — simultaneous play and reveal; CPU plays cards when Turn button is pressed
-- [x] **Combat resolution** — Attack targets Defense first, overflow hits health; buffs add to attack/defense power
+- [x] **Combat resolution** — Attack targets Defense first, overflow hits health; a buff adds to attack/defense power only when a matching card is played
 - [x] **Health cap at 10** — `incrementHealth` clamps to max 10
 - [x] **Game over condition** — checks for health reaching 0 after each round; declares winner
 - [x] **Discard → Deck reshuffle** — when Deck is empty during draw, Discard Pile reshuffles back into Deck
 - [x] **CPU AI** — greedy card selection: sorts by cost, plays as many cards as AP allows
 - [x] **Start game flow** — shuffles decks, deals 3 cards to each player, sets 2 AP, restricts first-round draws
-- [x] **Buff card logic** — attack buffs add to total attack, defense buffs add to total defense, AP buffs grant +1 AP next round
-- [x] **Heal card logic** — heals parsed from card description, applied with health cap
+- [x] **Buff card logic** — attack/defense buffs only take effect alongside a matching played Attack/Defense card (a lone buff does nothing); AP buffs grant +1 AP next round. Classified by explicit card `effect` metadata.
+- [x] **Heal card logic** — heals use the card's explicit `amount` metadata, applied with the health cap
 - [x] **Game slice** — `gameSlice.ts` manages game phases (idle, starting, playerTurn, resolving, roundEnd, gameOver), round counter, winner, and battle log
 - [x] **Battle log** — `RoundLog` component displays combat results after each round
 
@@ -126,7 +126,7 @@ npm run dev
 - [x] ~~Method for drawing cards from Deck to Hand~~ (`playerDrawCards` / `cpuDrawCards` in `cardSlice.ts`)
 - [x] ~~Method for selecting and playing cards from Hand to Cards Played~~ (`playerPlayCard` / `cpuPlayCard` in `cardSlice.ts`)
 - [x] ~~Method to reshuffle Discard Pile back into Deck when Deck is empty~~ (auto-reshuffle in draw actions)
-- [x] ~~Turn button logic: compare Player's Cards Played vs CPU's Cards Played, calculate damage~~ (`resolveCombat` in `gameThunks.ts`)
+- [x] ~~Turn button logic: compare Player's Cards Played vs CPU's Cards Played, calculate damage~~ (`resolveCombat` in `features/game/combat.ts`)
 
 ## Future Ideas
 

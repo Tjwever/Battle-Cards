@@ -2,11 +2,28 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit'
 import type { RootState } from '../../app/store'
 import cardsData from '../../app/cardsData'
+import { MAX_HAND_SIZE, INITIAL_DRAW_COUNT } from '../../app/gameConfig'
+
+/**
+ * Explicit semantic effect of a card. This is the single source of truth for
+ * how combat treats a card — never inferred from stats or parsed from text.
+ */
+export type CardEffect =
+    | 'attack'
+    | 'defense'
+    | 'attackBuff'
+    | 'defenseBuff'
+    | 'apBuff'
+    | 'heal'
 
 export interface Card {
     id: number
     name: string
     action_type: 'Attack' | 'Defense' | 'Buff' | 'Heal'
+    /** Explicit effect category used by combat resolution. */
+    effect: CardEffect
+    /** Canonical magnitude of the card's effect (damage, block, buff bonus, heal HP, or AP granted). */
+    amount: number
     description: string
     art: string
     attack: number
@@ -25,8 +42,7 @@ export interface CardState {
     computerDiscardPile: Card[]
 }
 
-export const MAX_HAND_SIZE = 5
-export const INITIAL_DRAW_COUNT = 3
+export { MAX_HAND_SIZE, INITIAL_DRAW_COUNT }
 
 function shuffleArray(array: Card[]): Card[] {
     const shuffled = [...array]
