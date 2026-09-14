@@ -9,6 +9,7 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "test": "vitest",
+    "sim": "vite-node src/sim/runSim.ts --",
     "type-check": "tsc",
     "lint": "eslint src/",
     "lint:fix": "eslint src/ --fix"

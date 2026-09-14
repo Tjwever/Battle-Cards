@@ -3,6 +3,8 @@ import { createSlice } from '@reduxjs/toolkit'
 import type { RootState } from '../../app/store'
 import cardsData from '../../app/cardsData'
 import { MAX_HAND_SIZE, INITIAL_DRAW_COUNT } from '../../app/gameConfig'
+import { shuffle } from '../game/rng'
+import { drawCards } from '../game/deckOps'
 
 /**
  * Explicit semantic effect of a card. This is the single source of truth for
@@ -45,12 +47,7 @@ export interface CardState {
 export { MAX_HAND_SIZE, INITIAL_DRAW_COUNT }
 
 function shuffleArray(array: Card[]): Card[] {
-    const shuffled = [...array]
-    for (let i = shuffled.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1))
-        ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
-    }
-    return shuffled
+    return shuffle(array)
 }
 
 const initialState: CardState = {
@@ -75,36 +72,30 @@ export const cardSlice = createSlice({
             state.computerDeck = shuffleArray(state.computerDeck)
         },
         playerDrawCards(state, action: PayloadAction<number>) {
-            const count = action.payload
-            const maxDraw = MAX_HAND_SIZE - state.playerHand.length
-            const toDraw = Math.min(count, maxDraw)
-
-            for (let i = 0; i < toDraw; i++) {
-                if (state.playerDeck.length === 0) {
-                    if (state.playerDiscardPile.length === 0) break
-                    state.playerDeck = shuffleArray(state.playerDiscardPile)
-                    state.playerDiscardPile = []
-                }
-                const card = state.playerDeck.shift()
-                if (card) state.playerHand.push(card)
-            }
+            const { deck, discard, hand } = drawCards(
+                {
+                    deck: state.playerDeck,
+                    discard: state.playerDiscardPile,
+                    hand: state.playerHand,
+                },
+                action.payload
+            )
+            state.playerDeck = deck
+            state.playerDiscardPile = discard
+            state.playerHand = hand
         },
         cpuDrawCards(state, action: PayloadAction<number>) {
-            const count = action.payload
-            const maxDraw = MAX_HAND_SIZE - state.computerHand.length
-            const toDraw = Math.min(count, maxDraw)
-
-            for (let i = 0; i < toDraw; i++) {
-                if (state.computerDeck.length === 0) {
-                    if (state.computerDiscardPile.length === 0) break
-                    state.computerDeck = shuffleArray(
-                        state.computerDiscardPile
-                    )
-                    state.computerDiscardPile = []
-                }
-                const card = state.computerDeck.shift()
-                if (card) state.computerHand.push(card)
-            }
+            const { deck, discard, hand } = drawCards(
+                {
+                    deck: state.computerDeck,
+                    discard: state.computerDiscardPile,
+                    hand: state.computerHand,
+                },
+                action.payload
+            )
+            state.computerDeck = deck
+            state.computerDiscardPile = discard
+            state.computerHand = hand
         },
         playerPlayCard(state, action: PayloadAction<number>) {
             const cardIndex = state.playerHand.findIndex(
