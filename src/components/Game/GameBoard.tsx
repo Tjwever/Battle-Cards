@@ -6,6 +6,13 @@ import {
     selectWinner,
 } from '../../features/game/gameSlice'
 import {
+    selectPlayerDeckId,
+    selectCpuDeckId,
+    setPlayerDeck,
+    setCpuDeck,
+} from '../../features/game/setupSlice'
+import { DECK_LIST, DECK_IDS, DECKS } from '../../app/decks'
+import {
     selectPlayerDeck,
     selectPlayerDiscardPile,
     selectComputerDeck,
@@ -34,8 +41,14 @@ export default function GameBoard() {
     const cpuDeckSize = useAppSelector(selectComputerDeck).length
     const cpuDiscardSize = useAppSelector(selectComputerDiscardPile).length
     const cpuCardsPlayed = useAppSelector(selectComputerCardsPlayed)
+    const playerDeckId = useAppSelector(selectPlayerDeckId)
+    const cpuDeckId = useAppSelector(selectCpuDeckId)
 
     const handleStartGame = () => {
+        // Player keeps their chosen deck; the CPU is dealt a random deck.
+        const randomCpu =
+            DECK_IDS[Math.floor(Math.random() * DECK_IDS.length)]
+        dispatch(setCpuDeck(randomCpu))
         dispatch(initGame())
     }
 
@@ -55,6 +68,30 @@ export default function GameBoard() {
                 <div className={styles.startScreen}>
                     <h1>Battle Cards</h1>
                     <p>A card game of strategy and combat</p>
+                    <div className={styles.deckSelectTitle}>Choose your deck</div>
+                    <div className={styles.deckOptions}>
+                        {DECK_LIST.map((deck) => {
+                            const selected = deck.id === playerDeckId
+                            return (
+                                <button
+                                    key={deck.id}
+                                    type="button"
+                                    aria-pressed={selected}
+                                    className={`${styles.deckOption} ${
+                                        selected ? styles.deckOptionSelected : ''
+                                    }`}
+                                    onClick={() => dispatch(setPlayerDeck(deck.id))}
+                                >
+                                    <span className={styles.deckOptionName}>
+                                        {deck.name}
+                                    </span>
+                                    <span className={styles.deckOptionDesc}>
+                                        {deck.description}
+                                    </span>
+                                </button>
+                            )
+                        })}
+                    </div>
                     <button
                         className={styles.playButton}
                         onClick={handleStartGame}
@@ -95,6 +132,9 @@ export default function GameBoard() {
     return (
         <div className={styles.App}>
             <div className={styles.roundIndicator}>Round {round}</div>
+            <div className={styles.matchup}>
+                You: {DECKS[playerDeckId].name} vs CPU: {DECKS[cpuDeckId].name}
+            </div>
             <div className={styles.gameBoard}>
                 <div className={styles.playersSide}>
                     <CardSpot

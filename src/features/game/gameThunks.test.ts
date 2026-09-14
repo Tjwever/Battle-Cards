@@ -2,6 +2,7 @@ import { configureStore } from '@reduxjs/toolkit'
 import playerReducer from '../player/playerSlice'
 import cardReducer from '../cards/cardSlice'
 import gameReducer from './gameSlice'
+import setupReducer from './setupSlice'
 import { initGame, revealAndResolve, advanceToNextRound } from './gameThunks'
 
 function makeStore() {
@@ -10,6 +11,7 @@ function makeStore() {
             player: playerReducer,
             card: cardReducer,
             game: gameReducer,
+            setup: setupReducer,
         },
     })
 }

@@ -3,12 +3,14 @@ import { configureStore } from "@reduxjs/toolkit"
 import playerReducer from "../features/player/playerSlice"
 import cardReducer from "../features/cards/cardSlice"
 import gameReducer from "../features/game/gameSlice"
+import setupReducer from "../features/game/setupSlice"
 
 export const store = configureStore({
   reducer: {
     player: playerReducer,
     card: cardReducer,
     game: gameReducer,
+    setup: setupReducer,
   },
 })
 

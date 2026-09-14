@@ -6,7 +6,7 @@ import {
     cpuDrawCards,
     cpuPlayCard,
     discardPlayedCards,
-    resetCards
+    loadDecks,
 } from '../cards/cardSlice'
 import {
     resetPlayers,
@@ -27,6 +27,7 @@ import {
     resetGame,
 } from './gameSlice'
 import { cpuSelectCards, resolveCombat, apCostOf } from './combat'
+import { getDeck } from '../../app/decks'
 
 /**
  * The CPU commits its cards for the round face-down at the start of the
@@ -48,10 +49,13 @@ export const cpuCommitCards = (): AppThunk => (dispatch, getState) => {
     }
 }
 
-export const initGame = (): AppThunk => (dispatch) => {
+export const initGame = (): AppThunk => (dispatch, getState) => {
+    const { playerDeckId, cpuDeckId } = getState().setup
     dispatch(resetGame())
     dispatch(resetPlayers())
-    dispatch(resetCards())
+    dispatch(
+        loadDecks({ player: getDeck(playerDeckId), computer: getDeck(cpuDeckId) })
+    )
     dispatch(shufflePlayerDeck())
     dispatch(shuffleCpuDeck())
     dispatch(startGame())

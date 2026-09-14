@@ -1,5 +1,6 @@
 /* eslint-disable no-console -- this is a CLI script; console output is its purpose */
 import cardsData from '../app/cardsData'
+import { DECK_LIST, getDeck } from '../app/decks'
 import { createRng } from '../features/game/rng'
 import { runSimulations } from './engine'
 
@@ -13,9 +14,43 @@ function arg(name: string, fallback: number): number {
     return fallback
 }
 
+function has(flag: string): boolean {
+    return process.argv.slice(2).includes(`--${flag}`)
+}
+
+const pct = (n: number) => `${(n * 100).toFixed(1)}%`
+
+function deckMatrix(games: number, seed: number) {
+    console.log('\n=== Deck-vs-Deck Matrix (A = row, greedy AI) ===')
+    console.log(`games per cell: ${games}   seed: ${seed}\n`)
+    const header = ['        '].concat(
+        DECK_LIST.map((d) => d.name.padStart(10))
+    )
+    console.log(header.join(''))
+    for (const a of DECK_LIST) {
+        const row = [a.name.padEnd(8)]
+        for (const b of DECK_LIST) {
+            const stats = runSimulations(
+                getDeck(a.id),
+                getDeck(b.id),
+                games,
+                (i) => createRng(seed + i)
+            )
+            row.push(pct(stats.aWinRate).padStart(10))
+        }
+        console.log(row.join(''))
+    }
+    console.log('')
+}
+
 function main() {
     const games = arg('games', 2000)
     const seed = arg('seed', 12345)
+
+    if (has('matrix')) {
+        deckMatrix(arg('games', 500), seed)
+        return
+    }
 
     const stats = runSimulations(
         cardsData,
@@ -24,7 +59,6 @@ function main() {
         (i) => createRng(seed + i * 2654435761)
     )
 
-    const pct = (n: number) => `${(n * 100).toFixed(1)}%`
     console.log('\n=== Battle-Cards Balance Simulation ===')
     console.log(`games: ${stats.games}   seed: ${seed}   (deck A vs deck B, greedy AI)`)
     console.log(

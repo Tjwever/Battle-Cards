@@ -122,6 +122,19 @@ export const cardSlice = createSlice({
             state.playerCardsPlayed = []
             state.computerCardsPlayed = []
         },
+        loadDecks(
+            state,
+            action: PayloadAction<{ player: Card[]; computer: Card[] }>
+        ) {
+            state.playerDeck = action.payload.player
+            state.computerDeck = action.payload.computer
+            state.playerHand = []
+            state.computerHand = []
+            state.playerCardsPlayed = []
+            state.computerCardsPlayed = []
+            state.playerDiscardPile = []
+            state.computerDiscardPile = []
+        },
         resetCards() {
             return {
                 ...initialState,
@@ -140,6 +153,7 @@ export const {
     playerPlayCard,
     cpuPlayCard,
     discardPlayedCards,
+    loadDecks,
     resetCards,
 } = cardSlice.actions
 

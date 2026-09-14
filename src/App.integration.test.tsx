@@ -4,6 +4,7 @@ import { configureStore } from '@reduxjs/toolkit'
 import playerReducer from './features/player/playerSlice'
 import cardReducer from './features/cards/cardSlice'
 import gameReducer from './features/game/gameSlice'
+import setupReducer from './features/game/setupSlice'
 import App from './App'
 
 // Fresh store per test for isolation (App uses the singleton store in prod).
@@ -13,6 +14,7 @@ function makeStore() {
             player: playerReducer,
             card: cardReducer,
             game: gameReducer,
+            setup: setupReducer,
         },
     })
 }
@@ -36,6 +38,24 @@ describe('App integration — full game flow (render path)', () => {
         expect(
             screen.getByRole('button', { name: /start game/i })
         ).toBeInTheDocument()
+    })
+
+    it('lets the player choose a deck, which seeds the game', () => {
+        const store = renderApp()
+        // pick Lightning
+        fireEvent.click(screen.getByRole('button', { name: /lightning/i }))
+        expect(store.getState().setup.playerDeckId).toBe('lightning')
+
+        fireEvent.click(screen.getByRole('button', { name: /start game/i }))
+        // the player's deck was seeded from the Lightning pool (ids 300+)
+        const s = store.getState()
+        const playerCards = [
+            ...s.card.playerDeck,
+            ...s.card.playerHand,
+            ...s.card.playerCardsPlayed,
+        ]
+        expect(playerCards).toHaveLength(30)
+        expect(playerCards.every((c) => c.id >= 300 && c.id < 400)).toBe(true)
     })
 
     it('starts a game: deals a hand, shows round 1 and starting AP', () => {
