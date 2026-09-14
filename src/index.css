@@ -37,3 +37,44 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+/* --- Presentation animations (E8) --- */
+
+@keyframes bc-shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-6px); }
+  40% { transform: translateX(6px); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(4px); }
+}
+
+@keyframes bc-damage-flash {
+  0% { box-shadow: 0 0 0 rgba(231, 76, 60, 0); }
+  30% { box-shadow: 0 0 24px rgba(231, 76, 60, 0.8); }
+  100% { box-shadow: 0 0 0 rgba(231, 76, 60, 0); }
+}
+
+@keyframes bc-flip-in {
+  0% { transform: rotateY(90deg) scale(0.9); opacity: 0; }
+  60% { transform: rotateY(-10deg) scale(1.02); opacity: 1; }
+  100% { transform: rotateY(0deg) scale(1); opacity: 1; }
+}
+
+/* Applied briefly when a side loses health. */
+.bc-damage-hit {
+  animation: bc-shake 0.4s ease-in-out, bc-damage-flash 0.5s ease-out;
+  border-radius: 8px;
+}
+
+/* Applied to a CPU card as it is revealed (flips from face-down). */
+.bc-reveal-flip {
+  animation: bc-flip-in 0.5s cubic-bezier(0.4, 0, 0.2, 1) both;
+  transform-style: preserve-3d;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bc-damage-hit,
+  .bc-reveal-flip {
+    animation: none !important;
+  }
+}

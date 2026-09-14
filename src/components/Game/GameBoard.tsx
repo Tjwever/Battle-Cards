@@ -16,6 +16,7 @@ import {
 } from '../../features/game/setupSlice'
 import { DECK_LIST, DECK_IDS, DECKS } from '../../app/decks'
 import { selectStats } from '../../features/game/statsSlice'
+import { useHealthHit } from '../../features/game/useHealthHit'
 import {
     selectPlayerDeck,
     selectPlayerDiscardPile,
@@ -53,6 +54,7 @@ export default function GameBoard() {
     const cpuDeckId = useAppSelector(selectCpuDeckId)
     const difficulty = useAppSelector(selectDifficulty)
     const stats = useAppSelector(selectStats)
+    const cpuHit = useHealthHit(cpusHealth)
 
     const handleStartGame = () => {
         // Player keeps their chosen deck; the CPU is dealt a random deck.
@@ -176,7 +178,11 @@ export default function GameBoard() {
                         count={cpuDeckSize}
                     />
                     <div className={styles.playersContainer}>
-                        <div className={styles.cpusHealthPoints}>
+                        <div
+                            className={`${styles.cpusHealthPoints} ${
+                                cpuHit ? 'bc-damage-hit' : ''
+                            }`}
+                        >
                             Computer Health: {cpusHealth}
                         </div>
                         <div className={styles.cpusHand}>
@@ -207,16 +213,20 @@ export default function GameBoard() {
                                       />
                                   ))
                                 : cpuCardsPlayed.map((card) => (
-                                      <Card
+                                      <div
                                           key={card.id}
-                                          name={card.name}
-                                          description={card.description}
-                                          art={card.art}
-                                          action_type={card.action_type}
-                                          attack={card.attack}
-                                          defense={card.defense}
-                                          action_points={card.action_points}
-                                      />
+                                          className="bc-reveal-flip"
+                                      >
+                                          <Card
+                                              name={card.name}
+                                              description={card.description}
+                                              art={card.art}
+                                              action_type={card.action_type}
+                                              attack={card.attack}
+                                              defense={card.defense}
+                                              action_points={card.action_points}
+                                          />
+                                      </div>
                                   ))}
                         </div>
                     </div>
