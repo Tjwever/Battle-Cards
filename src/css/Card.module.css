@@ -177,6 +177,16 @@
     0 0 20px rgba(155, 89, 182, 0.2);
 }
 
+.debuffCard {
+  border-color: rgba(230, 126, 34, 0.35);
+}
+.debuffCard:hover {
+  border-color: rgba(230, 126, 34, 0.6);
+  box-shadow:
+    0 12px 30px rgba(0, 0, 0, 0.5),
+    0 0 20px rgba(230, 126, 34, 0.2);
+}
+
 @keyframes cardEntrance {
   from {
     opacity: 0;

@@ -6,7 +6,7 @@ interface CardProps {
     name: string
     description?: string
     art: string
-    action_type?: 'Attack' | 'Defense' | 'Buff' | 'Heal'
+    action_type?: 'Attack' | 'Defense' | 'Buff' | 'Heal' | 'Debuff'
     attack?: number
     defense?: number
     action_points?: number
@@ -18,6 +18,7 @@ const typeClassMap: Record<string, string> = {
     Defense: styles.defenseCard,
     Buff: styles.buffCard,
     Heal: styles.healCard,
+    Debuff: styles.debuffCard,
 }
 
 const Card: React.FC<CardProps> = ({

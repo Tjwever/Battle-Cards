@@ -106,15 +106,17 @@ describe('sim engine', () => {
         expect(stats.avgRounds).toBeGreaterThan(0)
     })
 
-    it('mirror match (identical decks + AI) is roughly balanced', () => {
+    it('mirror match (identical decks + AI) is roughly symmetric', () => {
         const stats = runSimulations(
             cardsData,
             cardsData,
             400,
             (i) => createRng(50 + i)
         )
-        // Neither side should dominate a true mirror; allow generous margin.
-        expect(stats.aWinRate).toBeGreaterThan(0.3)
-        expect(stats.aWinRate).toBeLessThan(0.7)
+        // A true mirror should not favour one seat much; the only asymmetry is
+        // the double-KO tiebreaker. Assert the two win rates are close.
+        expect(Math.abs(stats.aWinRate - stats.bWinRate)).toBeLessThan(0.12)
+        expect(stats.aWinRate).toBeLessThan(0.6)
+        expect(stats.bWinRate).toBeLessThan(0.6)
     })
 })

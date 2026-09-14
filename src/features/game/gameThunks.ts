@@ -93,7 +93,7 @@ export const revealAndResolve = (): AppThunk => (dispatch, getState) => {
         )
     }
 
-    const { playerDamage, cpuDamage, playerHeal, cpuHeal, playerAPGain, cpuAPGain, log } =
+    const { playerDamage, cpuDamage, playerHeal, cpuHeal, playerAPGain, cpuAPGain, playerAPLoss, cpuAPLoss, log } =
         resolveCombat(playerCardsPlayed, cpuCardsPlayed)
 
     for (const entry of log) {
@@ -112,11 +112,13 @@ export const revealAndResolve = (): AppThunk => (dispatch, getState) => {
     if (cpuHeal > 0) {
         dispatch(incrementHealth({ amount: cpuHeal, player: 'cpu' }))
     }
-    if (playerAPGain > 0) {
-        dispatch(addPendingAP({ amount: playerAPGain, player: 'player' }))
+    const playerNetAP = playerAPGain - playerAPLoss
+    const cpuNetAP = cpuAPGain - cpuAPLoss
+    if (playerNetAP !== 0) {
+        dispatch(addPendingAP({ amount: playerNetAP, player: 'player' }))
     }
-    if (cpuAPGain > 0) {
-        dispatch(addPendingAP({ amount: cpuAPGain, player: 'cpu' }))
+    if (cpuNetAP !== 0) {
+        dispatch(addPendingAP({ amount: cpuNetAP, player: 'cpu' }))
     }
 
     dispatch(endRound())

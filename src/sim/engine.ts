@@ -61,7 +61,7 @@ function commit(player: SimPlayer, selected: Card[]): Card[] {
 
 function upkeep(player: SimPlayer, played: Card[], rng: Rng): void {
     player.discard.push(...played)
-    player.ap += player.pendingAP
+    player.ap = Math.max(0, player.ap + player.pendingAP)
     player.pendingAP = 0
     const drawn = drawCards(
         { deck: player.deck, discard: player.discard, hand: player.hand },
@@ -110,8 +110,8 @@ export function simulateGame(
         B.health = Math.min(MAX_HEALTH, B.health + r.cpuHeal)
         A.health = Math.max(0, A.health - r.playerDamage)
         A.health = Math.min(MAX_HEALTH, A.health + r.playerHeal)
-        A.pendingAP += r.playerAPGain
-        B.pendingAP += r.cpuAPGain
+        A.pendingAP += r.playerAPGain - r.playerAPLoss
+        B.pendingAP += r.cpuAPGain - r.cpuAPLoss
 
         if (A.health <= 0 || B.health <= 0) {
             if (A.health <= 0 && B.health <= 0)

@@ -7,14 +7,15 @@ const EFFECTS: CardEffect[] = [
     'attackBuff',
     'defenseBuff',
     'apBuff',
+    'apDebuff',
     'heal',
 ]
 
 describe('cardsData — data integrity', () => {
-    it('has 40 cards with unique, contiguous ids 1..40', () => {
-        expect(cardsData).toHaveLength(40)
+    it('has 43 cards with unique, contiguous ids 1..43', () => {
+        expect(cardsData).toHaveLength(43)
         const ids = cardsData.map((c) => c.id).sort((a, b) => a - b)
-        expect(ids).toEqual(Array.from({ length: 40 }, (_, i) => i + 1))
+        expect(ids).toEqual(Array.from({ length: 43 }, (_, i) => i + 1))
     })
 
     it('every card has a known effect, a positive amount, and non-negative AP', () => {
@@ -73,6 +74,18 @@ describe('cardsData — data integrity', () => {
             expect(c.defense).toBe(0)
             expect(c.action_points).toBe(0)
             expect(c.amount).toBe(1)
+        }
+    })
+
+    it('ap debuffs: Debuff type, positive amount, cost AP, no attack/defense', () => {
+        const debuffs = byEffect('apDebuff')
+        expect(debuffs.length).toBeGreaterThan(0)
+        for (const c of debuffs) {
+            expect(c.action_type).toBe('Debuff')
+            expect(c.attack).toBe(0)
+            expect(c.defense).toBe(0)
+            expect(c.amount).toBeGreaterThan(0)
+            expect(c.action_points).toBeGreaterThan(0)
         }
     })
 

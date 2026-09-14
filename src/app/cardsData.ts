@@ -507,6 +507,44 @@ const cardsData: Card[] = [
         defense: 0,
         action_points: 0,
     },
+
+    // Debuffs — remove the opponent's Action Points next round
+    {
+        id: 41,
+        name: 'AP Drain',
+        action_type: CardType.Debuff,
+        effect: 'apDebuff',
+        amount: 1,
+        description: "Removes 1 from opponent's Action Points next round",
+        art: 'icons8-lightning-64.png',
+        attack: 0,
+        defense: 0,
+        action_points: 2,
+    },
+    {
+        id: 42,
+        name: 'AP Drain',
+        action_type: CardType.Debuff,
+        effect: 'apDebuff',
+        amount: 1,
+        description: "Removes 1 from opponent's Action Points next round",
+        art: 'icons8-lightning-64.png',
+        attack: 0,
+        defense: 0,
+        action_points: 2,
+    },
+    {
+        id: 43,
+        name: 'AP Drain+',
+        action_type: CardType.Debuff,
+        effect: 'apDebuff',
+        amount: 2,
+        description: "Removes 2 from opponent's Action Points next round",
+        art: 'icons8-lightning-64.png',
+        attack: 0,
+        defense: 0,
+        action_points: 3,
+    },
 ]
 
 export default cardsData

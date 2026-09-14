@@ -3,4 +3,5 @@ export enum CardType {
     Defense = 'Defense',
     Buff = 'Buff',
     Heal = 'Heal',
+    Debuff = 'Debuff',
 }

@@ -134,6 +134,19 @@ describe('playerSlice', () => {
             expect(result.cpu.actionPoints).toBe(5)
             expect(result.cpu.pendingAP).toBe(0)
         })
+
+        it('floors AP at 0 when pending is negative (debuff drain)', () => {
+            let state = makeState({
+                player: { health: 10, actionPoints: 1, pendingAP: 0 },
+            })
+            state = playerReducer(
+                state,
+                addPendingAP({ amount: -3, player: 'player' })
+            )
+            const result = playerReducer(state, applyPendingAP())
+            expect(result.player.actionPoints).toBe(0)
+            expect(result.player.pendingAP).toBe(0)
+        })
     })
 
     describe('resetPlayers', () => {

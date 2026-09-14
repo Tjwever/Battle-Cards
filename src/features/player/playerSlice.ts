@@ -51,9 +51,15 @@ export const playerSlice = createSlice({
             state[player].pendingAP += amount
         },
         applyPendingAP(state) {
-            state.player.actionPoints += state.player.pendingAP
+            state.player.actionPoints = Math.max(
+                0,
+                state.player.actionPoints + state.player.pendingAP
+            )
             state.player.pendingAP = 0
-            state.cpu.actionPoints += state.cpu.pendingAP
+            state.cpu.actionPoints = Math.max(
+                0,
+                state.cpu.actionPoints + state.cpu.pendingAP
+            )
             state.cpu.pendingAP = 0
         },
         resetPlayers() {

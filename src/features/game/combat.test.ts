@@ -58,6 +58,15 @@ const apBuff = () =>
         defense: 0,
         action_points: 0,
     })
+const apDebuff = (amt: number) =>
+    makeCard({
+        action_type: 'Debuff',
+        effect: 'apDebuff',
+        amount: amt,
+        attack: 0,
+        defense: 0,
+        action_points: 2,
+    })
 const heal = (amt: number) =>
     makeCard({
         action_type: 'Heal',
@@ -163,6 +172,24 @@ describe('combat — resolveCombat (characterization: current behavior)', () => 
     it('logs "Neither side played any cards" when both are empty', () => {
         const result = resolveCombat([], [])
         expect(result.log).toContain('Neither side played any cards')
+    })
+
+    it("a player debuff drains the CPU's AP next round (standalone)", () => {
+        const result = resolveCombat([apDebuff(2)], [])
+        expect(result.cpuAPLoss).toBe(2)
+        expect(result.playerAPLoss).toBe(0)
+    })
+
+    it("a CPU debuff drains the player's AP next round", () => {
+        const result = resolveCombat([], [apDebuff(1)])
+        expect(result.playerAPLoss).toBe(1)
+        expect(result.cpuAPLoss).toBe(0)
+    })
+
+    it('debuffs stack and are independent of other cards played', () => {
+        const result = resolveCombat([attack(2), apDebuff(1), apDebuff(2)], [])
+        expect(result.cpuAPLoss).toBe(3)
+        expect(result.cpuDamage).toBe(2)
     })
 })
 

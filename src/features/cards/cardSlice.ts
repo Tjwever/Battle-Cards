@@ -16,12 +16,13 @@ export type CardEffect =
     | 'attackBuff'
     | 'defenseBuff'
     | 'apBuff'
+    | 'apDebuff'
     | 'heal'
 
 export interface Card {
     id: number
     name: string
-    action_type: 'Attack' | 'Defense' | 'Buff' | 'Heal'
+    action_type: 'Attack' | 'Defense' | 'Buff' | 'Heal' | 'Debuff'
     /** Explicit effect category used by combat resolution. */
     effect: CardEffect
     /** Canonical magnitude of the card's effect (damage, block, buff bonus, heal HP, or AP granted). */

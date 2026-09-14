@@ -7,6 +7,9 @@ export interface CombatResult {
     cpuHeal: number
     playerAPGain: number
     cpuAPGain: number
+    /** AP each side will LOSE next round from the opponent's debuff cards. */
+    playerAPLoss: number
+    cpuAPLoss: number
     log: string[]
 }
 
@@ -115,6 +118,17 @@ export function resolveCombat(
         log.push(`CPU gains +1 AP for next round`)
     }
 
+    // Debuffs remove the OPPONENT's AP next round — a standalone offensive
+    // effect that applies whether or not any other card is played.
+    const cpuAPLoss = sumByEffect(playerCards, 'apDebuff')
+    const playerAPLoss = sumByEffect(cpuCards, 'apDebuff')
+    if (cpuAPLoss > 0) {
+        log.push(`Player drains ${cpuAPLoss} AP from CPU next round`)
+    }
+    if (playerAPLoss > 0) {
+        log.push(`CPU drains ${playerAPLoss} AP from Player next round`)
+    }
+
     let totalPlayerAttack = playerAttacks.reduce((sum, c) => sum + c.attack, 0)
     totalPlayerAttack += playerAttackBuff
 
@@ -169,16 +183,7 @@ export function resolveCombat(
     if (playerHeal > 0) log.push(`Player heals ${playerHeal} HP`)
     if (cpuHeal > 0) log.push(`CPU heals ${cpuHeal} HP`)
 
-    if (
-        playerAttacks.length === 0 &&
-        cpuAttacks.length === 0 &&
-        playerHeals.length === 0 &&
-        cpuHeals.length === 0 &&
-        playerBuffs.length === 0 &&
-        cpuBuffs.length === 0 &&
-        playerDefenses.length === 0 &&
-        cpuDefenses.length === 0
-    ) {
+    if (playerCards.length === 0 && cpuCards.length === 0) {
         log.push('Neither side played any cards')
     }
 
@@ -189,6 +194,8 @@ export function resolveCombat(
         cpuHeal,
         playerAPGain,
         cpuAPGain,
+        playerAPLoss,
+        cpuAPLoss,
         log,
     }
 }
