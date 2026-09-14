@@ -49,12 +49,34 @@ describe('App integration — full game flow (render path)', () => {
         expect(screen.getAllByText('AP: 2').length).toBeGreaterThanOrEqual(1)
     })
 
-    it('plays a round: resolves combat and shows the battle log + continue', () => {
+    it('commits CPU cards face-down at the start of the turn', () => {
+        const store = renderApp()
+        fireEvent.click(screen.getByRole('button', { name: /start game/i }))
+
+        const s = store.getState()
+        // CPU drew 3 and committed some face-down; hand + committed accounts for the draw
+        expect(
+            s.card.computerHand.length + s.card.computerCardsPlayed.length
+        ).toBe(3)
+        expect(s.game.phase).toBe('playerTurn')
+        // the reveal action is available (not yet revealed)
+        expect(
+            screen.getByRole('button', { name: /^reveal$/i })
+        ).toBeInTheDocument()
+        // if the CPU committed anything, it renders as face-down backs
+        if (s.card.computerCardsPlayed.length > 0) {
+            expect(
+                screen.getAllByLabelText(/cpu committed card/i).length
+            ).toBe(s.card.computerCardsPlayed.length)
+        }
+    })
+
+    it('reveals a round: resolves combat and shows the battle log + continue', () => {
         renderApp()
         fireEvent.click(screen.getByRole('button', { name: /start game/i }))
-        fireEvent.click(screen.getByRole('button', { name: /play round/i }))
+        fireEvent.click(screen.getByRole('button', { name: /^reveal$/i }))
 
-        // After resolving, the round ends: battle log is shown and a Continue
+        // After revealing, the round ends: battle log is shown and a Continue
         // button lets the player advance.
         expect(screen.getByText(/battle log/i)).toBeInTheDocument()
         expect(

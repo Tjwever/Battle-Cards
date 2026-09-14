@@ -12,12 +12,13 @@ import {
     selectComputerDiscardPile,
     selectComputerCardsPlayed,
 } from '../../features/cards/cardSlice'
-import { initGame, playRound, advanceToNextRound } from '../../features/game/gameThunks'
+import { initGame, revealAndResolve, advanceToNextRound } from '../../features/game/gameThunks'
 import { PlayerStats } from '../Player/PlayerStats'
 import PlayerHand from '../Player/PlayerHand'
 import RoundLog from './RoundLog'
 import CardSpot from '../Cards/CardSpot'
 import Card from '../Cards/Card'
+import CardBack from '../Cards/CardBack'
 import styles from '../../css/GameBoard.module.css'
 
 export default function GameBoard() {
@@ -38,9 +39,9 @@ export default function GameBoard() {
         dispatch(initGame())
     }
 
-    const handlePlayRound = () => {
+    const handleReveal = () => {
         if (phase !== 'playerTurn') return
-        dispatch(playRound())
+        dispatch(revealAndResolve())
     }
 
     const handleNextRound = () => {
@@ -117,21 +118,30 @@ export default function GameBoard() {
                 {cpuCardsPlayed.length > 0 && (
                     <div className={styles.revealSection}>
                         <div className={styles.revealTitle}>
-                            CPU Played
+                            {phase === 'playerTurn'
+                                ? `CPU Committed (${cpuCardsPlayed.length} face-down)`
+                                : 'CPU Played'}
                         </div>
                         <div className={styles.revealCards}>
-                            {cpuCardsPlayed.map((card) => (
-                                <Card
-                                    key={card.id}
-                                    name={card.name}
-                                    description={card.description}
-                                    art={card.art}
-                                    action_type={card.action_type}
-                                    attack={card.attack}
-                                    defense={card.defense}
-                                    action_points={card.action_points}
-                                />
-                            ))}
+                            {phase === 'playerTurn'
+                                ? cpuCardsPlayed.map((card) => (
+                                      <CardBack
+                                          key={card.id}
+                                          label="CPU committed card"
+                                      />
+                                  ))
+                                : cpuCardsPlayed.map((card) => (
+                                      <Card
+                                          key={card.id}
+                                          name={card.name}
+                                          description={card.description}
+                                          art={card.art}
+                                          action_type={card.action_type}
+                                          attack={card.attack}
+                                          defense={card.defense}
+                                          action_points={card.action_points}
+                                      />
+                                  ))}
                         </div>
                     </div>
                 )}
@@ -147,10 +157,10 @@ export default function GameBoard() {
                     ) : (
                         <button
                             className={styles.playButton}
-                            onClick={handlePlayRound}
+                            onClick={handleReveal}
                             disabled={phase !== 'playerTurn'}
                         >
-                            Play Round
+                            Reveal
                         </button>
                     )}
                     <div className={styles.apDisplay}>AP: {ap}</div>

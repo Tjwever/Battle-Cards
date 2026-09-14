@@ -19,7 +19,7 @@ import {
 import {
     startGame,
     beginPlayerTurn,
-    resolveRound,
+    beginReveal,
     endRound,
     nextRound,
     setGameOver,
@@ -27,6 +27,26 @@ import {
     resetGame,
 } from './gameSlice'
 import { cpuSelectCards, resolveCombat, apCostOf } from './combat'
+
+/**
+ * The CPU commits its cards for the round face-down at the start of the
+ * player's turn — simultaneous, hidden play. Cards move to computerCardsPlayed
+ * (rendered as face-down backs) and are only revealed when the player reveals.
+ */
+export const cpuCommitCards = (): AppThunk => (dispatch, getState) => {
+    const state = getState()
+    const cpuHand = state.card.computerHand
+    const cpuAPAvailable = state.player.cpu.actionPoints
+
+    const cpuSelected = cpuSelectCards(cpuHand, cpuAPAvailable)
+    for (const card of cpuSelected) {
+        const cost = apCostOf(card)
+        dispatch(cpuPlayCard(card.id))
+        if (cost > 0) {
+            dispatch(spendAP({ amount: cost, player: 'cpu' }))
+        }
+    }
+}
 
 export const initGame = (): AppThunk => (dispatch) => {
     dispatch(resetGame())
@@ -38,24 +58,19 @@ export const initGame = (): AppThunk => (dispatch) => {
     dispatch(playerDrawCards(3))
     dispatch(cpuDrawCards(3))
     dispatch(beginPlayerTurn())
+    dispatch(cpuCommitCards())
 }
 
-export const playRound = (): AppThunk => (dispatch, getState) => {
-    const state = getState()
-    const cpuHand = state.card.computerHand
-    const cpuAPAvailable = state.player.cpu.actionPoints
-    const round = state.game.round
+/**
+ * The player reveals: the CPU's face-down cards flip, both sides resolve
+ * simultaneously. CPU cards were already committed at the start of the turn.
+ */
+export const revealAndResolve = (): AppThunk => (dispatch, getState) => {
+    const preState = getState()
+    if (preState.game.phase !== 'playerTurn') return
+    const round = preState.game.round
 
-    dispatch(resolveRound())
-
-    const cpuSelected = cpuSelectCards(cpuHand, cpuAPAvailable)
-    for (const card of cpuSelected) {
-        const cost = apCostOf(card)
-        dispatch(cpuPlayCard(card.id))
-        if (cost > 0) {
-            dispatch(spendAP({ amount: cost, player: 'cpu' }))
-        }
-    }
+    dispatch(beginReveal())
 
     const postState = getState()
     const playerCardsPlayed = postState.card.playerCardsPlayed
@@ -135,4 +150,5 @@ export const advanceToNextRound = (): AppThunk => (dispatch, getState) => {
     dispatch(playerDrawCards(5 - state.card.playerHand.length))
     dispatch(cpuDrawCards(5 - state.card.computerHand.length))
     dispatch(nextRound())
+    dispatch(cpuCommitCards())
 }

@@ -6,7 +6,7 @@ export type GamePhase =
     | 'idle'
     | 'starting'
     | 'playerTurn'
-    | 'resolving'
+    | 'revealing'
     | 'roundEnd'
     | 'gameOver'
 
@@ -37,8 +37,8 @@ export const gameSlice = createSlice({
         beginPlayerTurn(state) {
             state.phase = 'playerTurn'
         },
-        resolveRound(state) {
-            state.phase = 'resolving'
+        beginReveal(state) {
+            state.phase = 'revealing'
         },
         endRound(state) {
             state.phase = 'roundEnd'
@@ -64,7 +64,7 @@ export const gameSlice = createSlice({
 export const {
     startGame,
     beginPlayerTurn,
-    resolveRound,
+    beginReveal,
     endRound,
     nextRound,
     setGameOver,

@@ -1,7 +1,7 @@
 import gameReducer, {
     startGame,
     beginPlayerTurn,
-    resolveRound,
+    beginReveal,
     endRound,
     nextRound,
     setGameOver,
@@ -56,17 +56,17 @@ describe('gameSlice', () => {
             expect(result.phase).toBe('playerTurn')
         })
 
-        it('resolveRound -> resolving', () => {
+        it('beginReveal -> revealing', () => {
             const result = gameReducer(
                 makeState({ phase: 'playerTurn' }),
-                resolveRound()
+                beginReveal()
             )
-            expect(result.phase).toBe('resolving')
+            expect(result.phase).toBe('revealing')
         })
 
         it('endRound -> roundEnd', () => {
             const result = gameReducer(
-                makeState({ phase: 'resolving' }),
+                makeState({ phase: 'revealing' }),
                 endRound()
             )
             expect(result.phase).toBe('roundEnd')
@@ -79,8 +79,8 @@ describe('gameSlice', () => {
             expect(state.phase).toBe('starting')
             state = gameReducer(state, beginPlayerTurn())
             expect(state.phase).toBe('playerTurn')
-            state = gameReducer(state, resolveRound())
-            expect(state.phase).toBe('resolving')
+            state = gameReducer(state, beginReveal())
+            expect(state.phase).toBe('revealing')
             state = gameReducer(state, endRound())
             expect(state.phase).toBe('roundEnd')
             state = gameReducer(state, setGameOver('player'))
