@@ -51,14 +51,17 @@ export const playerSlice = createSlice({
             state[player].pendingAP += amount
         },
         applyPendingAP(state) {
+            // Refill AP to the per-round base, then apply this round's net
+            // buff (+) / debuff (-) deltas. AP does not carry over between
+            // rounds (use-it-or-lose-it), so a player can never be locked out.
             state.player.actionPoints = Math.max(
                 0,
-                state.player.actionPoints + state.player.pendingAP
+                STARTING_AP + state.player.pendingAP
             )
             state.player.pendingAP = 0
             state.cpu.actionPoints = Math.max(
                 0,
-                state.cpu.actionPoints + state.cpu.pendingAP
+                STARTING_AP + state.cpu.pendingAP
             )
             state.cpu.pendingAP = 0
         },

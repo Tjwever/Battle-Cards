@@ -55,7 +55,7 @@ function commit(player: SimPlayer, selected: Card[]): Card[] {
 
 function upkeep(player: SimPlayer, played: Card[], rng: Rng): void {
     player.discard.push(...played)
-    player.ap = Math.max(0, player.ap + player.pendingAP)
+    player.ap = Math.max(0, STARTING_AP + player.pendingAP)
     player.pendingAP = 0
     const drawn = drawCards(
         { deck: player.deck, discard: player.discard, hand: player.hand },

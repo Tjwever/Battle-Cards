@@ -147,6 +147,26 @@ describe('playerSlice', () => {
             expect(result.player.actionPoints).toBe(0)
             expect(result.player.pendingAP).toBe(0)
         })
+
+        it('REFILLS AP to the base each round even after being spent to 0 (no lockout)', () => {
+            // Regression: previously applyPendingAP only ADDED pending, so a
+            // player spent to 0 with no pending stayed at 0 forever.
+            const state = makeState({
+                player: { health: 10, actionPoints: 0, pendingAP: 0 },
+                cpu: { health: 10, actionPoints: 0, pendingAP: 0 },
+            })
+            const result = playerReducer(state, applyPendingAP())
+            expect(result.player.actionPoints).toBe(2) // STARTING_AP
+            expect(result.cpu.actionPoints).toBe(2)
+        })
+
+        it('does not carry unspent AP across rounds (use-it-or-lose-it)', () => {
+            const state = makeState({
+                player: { health: 10, actionPoints: 5, pendingAP: 0 },
+            })
+            const result = playerReducer(state, applyPendingAP())
+            expect(result.player.actionPoints).toBe(2) // reset to base, not 5
+        })
     })
 
     describe('resetPlayers', () => {

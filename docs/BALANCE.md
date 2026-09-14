@@ -1,43 +1,43 @@
 # Deck Balance Notes
 
 The balance simulation harness (`npm run sim -- --matrix [--smart]`) is the tool
-for tuning deck balance. Run it after any card or deck change.
+for tuning deck balance. Run it after any card, deck, AI, or rules change.
 
-## Current state (smart AI, per-cell = A-win% / draw%)
+## AP economy (important context)
+
+AP is a **per-round budget that resets each round** to a base of 2 (`STARTING_AP`),
+plus that round's net AP-buff (+) / debuff (−) deltas. It does **not** carry
+over (use-it-or-lose-it). This fixed the "AP never resets → locked out after a
+few rounds" bug, and as a side effect removed the old AP-snowball that had made
+games stalemate to the 300-round cap.
+
+## Current state (smart-vs-smart, per cell = A-win% / draw%)
 
 ```
-              Fire            Ice           Lightning
-Fire       26.8%/43.8%    36.8%/54.2%      24.2%/37.2%
-Ice         6.3%/53.3%    10.2%/76.8%      10.2%/40.2%
-Lightning  36.0%/37.8%    46.7%/43.8%      32.3%/34.0%
+              Fire            Ice            Lightning
+Fire       36.4%/1.0%     2.6%/1.4%       28.0%/0.0%
+Ice        94.0%/1.4%    31.4%/36.6%      93.2%/0.4%
+Lightning  53.2%/0.2%     3.8%/0.2%       43.2%/0.0%
 ```
 
-Power ordering under smart AI: **Lightning ≥ Fire ≫ Ice.**
+Draw rates are now near zero (except the Ice mirror) — games resolve instead of
+stalling, which is a clear improvement over the pre-fix behaviour.
 
-## What was fixed
+## Open balance item — Ice is now too strong
 
-- **Lightning's runaway dominance** — originally 73–78% vs the field; after
-  nerfing its AP snowball (Charge 5→3, Amplify 3→2, +defense) and its
-  undercosted attack (Chain Bolt 1→2 AP), it is 32–53%.
+Under the corrected fixed-AP economy, **Ice dominates** (~93–94% vs Fire and
+Lightning). With only ~2 AP/round and no snowball, aggressive decks can't burst
+through Ice's block + heal sustain, so Ice out-lasts them. This is the inverse
+of the pre-fix state (where the AP snowball favoured aggression and Ice was
+weak). It is a tuning item, not a correctness bug — the game is fully playable.
 
-## Known limitation — Ice underperforms
+Likely levers (measure each with the harness):
+- Reduce Ice's healing volume/size, or raise heal AP cost.
+- Give aggressive decks cheaper burst or armor-piercing.
+- Consider a per-round heal cap or diminishing returns.
 
-Ice loses to Fire and Lightning (~6–10% wins vs ~40–50% losses). This is
-**structural**, not a card-count problem — four Ice reworks (pure defense →
-control → aggro-control → sustain-midrange) did not close the gap. Three
-mechanics interact against reactive/defensive archetypes:
+## Seat asymmetry
 
-1. **Face-down commit (E1, spec-required):** cards are played blind, so a
-   defensive deck cannot "block when threatened" — it commits defense without
-   seeing the incoming attack, so blocks frequently whiff.
-2. **Tight AP economy:** ~2 AP/round forces a choice between defending, healing,
-   and attacking; a control deck can rarely do enough of all three.
-3. **Round-cap tiebreaker (harness):** ties resolve to the higher-health side,
-   rewarding aggression over attrition.
-
-Truly balancing Ice would require an engine/design change (e.g., an AP cap to
-curb snowball, visible commits, or a different resolution rule) that conflicts
-with the spec-required face-down mechanic and was out of scope for the themed-
-deck epic. It is left as an open, harness-measurable tuning item. Ice is still
-fun and coherent (a sustain deck) and viable against a weaker (greedy) opponent;
-it is simply not at parity under optimal play.
+The double-KO tiebreaker awards the win to the CPU (side B), so in aggressive
+mirrors the CPU is slightly favoured (e.g. Fire mirror ~36% player / ~63% CPU).
+This is a deliberate rule; revisit if player-side fairness becomes a concern.

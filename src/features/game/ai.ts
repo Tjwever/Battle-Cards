@@ -32,12 +32,16 @@ const sumAmount = (cards: Card[], effect: Card['effect']): number =>
  * health (no credit for overheal), so a heal at full health scores 0.
  */
 function scoreSelection(sel: Card[], ctx: AiContext): number {
-    const low = ctx.selfHealth <= 4
-    const wAtk = low ? 0.8 : 1.2
-    const wDef = low ? 1.6 : 0.7
-    const wHeal = low ? 2.2 : ctx.selfHealth < ctx.maxHealth ? 0.6 : 0
+    // Cards are committed face-down, so defense is a blind gamble (it whiffs
+    // when the opponent doesn't attack) while attack is guaranteed value.
+    // The economy is a fixed per-round AP budget, so tempo matters: prefer to
+    // spend AP on damage, keep some defense/heal only when health is low.
+    const critical = ctx.selfHealth <= 4
+    const wAtk = 1.3
+    const wDef = 0.9
+    const wHeal = critical ? 1.6 : ctx.selfHealth <= 7 ? 0.5 : 0
     const wApBuff = 0.5
-    const wApDebuff = 0.6
+    const wApDebuff = 0.7
 
     const attacks = sel.filter((c) => c.effect === 'attack')
     const defenses = sel.filter((c) => c.effect === 'defense')

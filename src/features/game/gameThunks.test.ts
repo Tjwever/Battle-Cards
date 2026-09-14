@@ -5,6 +5,7 @@ import gameReducer from './gameSlice'
 import setupReducer from './setupSlice'
 import statsReducer from './statsSlice'
 import { initGame, revealAndResolve, advanceToNextRound } from './gameThunks'
+import { spendAP } from '../player/playerSlice'
 
 function makeStore() {
     return configureStore({
@@ -76,5 +77,27 @@ describe('gameThunks — commit / reveal flow', () => {
         expect(
             s.card.computerHand.length + s.card.computerCardsPlayed.length
         ).toBeGreaterThan(0)
+    })
+
+    it('refills player AP every round so the player is never locked out (AP-reset bug regression)', () => {
+        const store = makeStore()
+        store.dispatch(initGame())
+
+        for (let round = 0; round < 5; round++) {
+            // Spend all of the player's AP this round.
+            const ap = store.getState().player.player.actionPoints
+            if (ap > 0) store.dispatch(spendAP({ amount: ap, player: 'player' }))
+            expect(store.getState().player.player.actionPoints).toBe(0)
+
+            store.dispatch(revealAndResolve())
+            if (store.getState().game.phase === 'gameOver') break
+            store.dispatch(advanceToNextRound())
+
+            // Next round the player must have AP again (base refill), never
+            // stuck at 0 as in the original bug.
+            expect(
+                store.getState().player.player.actionPoints
+            ).toBeGreaterThan(0)
+        }
     })
 })
