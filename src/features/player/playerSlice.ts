@@ -1,17 +1,16 @@
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit'
 import type { RootState } from '../../app/store'
+import { MAX_HEALTH, STARTING_AP } from '../../app/gameConfig'
 
 export interface PlayerState {
     player: { health: number; actionPoints: number; pendingAP: number }
     cpu: { health: number; actionPoints: number; pendingAP: number }
 }
 
-const MAX_HEALTH = 10
-
 const initialState: PlayerState = {
-    player: { health: 10, actionPoints: 2, pendingAP: 0 },
-    cpu: { health: 10, actionPoints: 2, pendingAP: 0 },
+    player: { health: MAX_HEALTH, actionPoints: STARTING_AP, pendingAP: 0 },
+    cpu: { health: MAX_HEALTH, actionPoints: STARTING_AP, pendingAP: 0 },
 }
 
 export const playerSlice = createSlice({
@@ -52,15 +51,18 @@ export const playerSlice = createSlice({
             state[player].pendingAP += amount
         },
         applyPendingAP(state) {
-            state.player.actionPoints += state.player.pendingAP
+            // Refill AP to the per-round base, then apply this round's net
+            // buff (+) / debuff (-) deltas. AP does not carry over between
+            // rounds (use-it-or-lose-it), so a player can never be locked out.
+            state.player.actionPoints = Math.max(
+                0,
+                STARTING_AP + state.player.pendingAP
+            )
             state.player.pendingAP = 0
-            state.cpu.actionPoints += state.cpu.pendingAP
-            state.cpu.pendingAP = 0
-        },
-        resetAP(state) {
-            state.player.actionPoints = 2
-            state.player.pendingAP = 0
-            state.cpu.actionPoints = 2
+            state.cpu.actionPoints = Math.max(
+                0,
+                STARTING_AP + state.cpu.pendingAP
+            )
             state.cpu.pendingAP = 0
         },
         resetPlayers() {
@@ -75,7 +77,6 @@ export const {
     spendAP,
     addPendingAP,
     applyPendingAP,
-    resetAP,
     resetPlayers,
 } = playerSlice.actions
 

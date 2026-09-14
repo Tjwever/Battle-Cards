@@ -138,3 +138,15 @@ dist
 .claude/
 rvst.yaml
 # <<< rvst-cli managed <<<
+
+# Kiro transient mission/qa markers
+.kiro-mission*
+.kiro-turn*
+.kiro-mission-run.log
+.kiro-mission-run.lock
+.kiro-mission-acp.log
+.qa-active*
+.qa-full*
+
+# Vite production build output
+/build

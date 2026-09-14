@@ -178,3 +178,148 @@
   0%, 100% { opacity: 0.5; transform: scale(0.8); }
   50% { opacity: 1; transform: scale(1.2); }
 }
+
+.deckSelectTitle {
+  font-family: "Cinzel", serif;
+  font-size: 1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--accent-gold);
+  text-shadow: 0 0 8px rgba(240, 192, 64, 0.3);
+  margin-top: 8px;
+}
+
+.deckOptions {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+  max-width: 720px;
+}
+
+.deckOption {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 200px;
+  padding: 18px 14px;
+  border-radius: 12px;
+  background: linear-gradient(145deg, #1e2a4a 0%, #16213e 50%, #0f1729 100%);
+  border: 1px solid rgba(240, 192, 64, 0.15);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.deckOption:hover {
+  transform: translateY(-4px);
+  border-color: rgba(240, 192, 64, 0.4);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.45), 0 0 18px rgba(240, 192, 64, 0.12);
+}
+
+.deckOption:focus-visible {
+  outline: 2px solid var(--accent-gold);
+  outline-offset: 2px;
+}
+
+.deckOptionSelected {
+  border-color: var(--accent-gold);
+  box-shadow: 0 0 22px rgba(240, 192, 64, 0.3);
+}
+
+.deckOptionName {
+  font-family: "Cinzel", serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--accent-gold);
+}
+
+.deckOptionDesc {
+  font-size: 0.75rem;
+  line-height: 1.35;
+  text-align: center;
+}
+
+.matchup {
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+  color: var(--text-secondary);
+  padding-bottom: 8px;
+}
+
+.restartButton {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  padding: 8px 18px;
+  border-radius: 8px;
+  border: 1px solid rgba(231, 76, 60, 0.35);
+  background: rgba(231, 76, 60, 0.08);
+  color: var(--accent-red);
+  font-family: "Cinzel", serif;
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.restartButton:hover {
+  background: rgba(231, 76, 60, 0.18);
+  border-color: var(--accent-red);
+}
+
+.restartButton:focus-visible {
+  outline: 2px solid var(--accent-red);
+  outline-offset: 2px;
+}
+
+.difficultyRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.record {
+  font-family: "Cinzel", serif;
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+  color: var(--accent-gold);
+  opacity: 0.85;
+}
+
+.difficultyLabel {
+  font-family: "Cinzel", serif;
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+  color: var(--text-secondary);
+}
+
+.difficultyOption {
+  padding: 6px 16px;
+  border-radius: 8px;
+  border: 1px solid rgba(240, 192, 64, 0.2);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text-secondary);
+  font-family: "Cinzel", serif;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.difficultyOption:hover {
+  border-color: rgba(240, 192, 64, 0.45);
+}
+
+.difficultyOption:focus-visible {
+  outline: 2px solid var(--accent-gold);
+  outline-offset: 2px;
+}
+
+.difficultyOptionSelected {
+  border-color: var(--accent-gold);
+  color: var(--accent-gold);
+  box-shadow: 0 0 14px rgba(240, 192, 64, 0.25);
+}

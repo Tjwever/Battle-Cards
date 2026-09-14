@@ -15,6 +15,8 @@ function makeCard(overrides: Partial<Card> = {}): Card {
         id: 99,
         name: 'Test Card',
         action_type: 'Attack',
+        effect: 'attack',
+        amount: 1,
         description: 'test',
         art: 'test.png',
         attack: 1,

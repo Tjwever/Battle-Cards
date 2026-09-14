@@ -6,7 +6,7 @@ interface CardProps {
     name: string
     description?: string
     art: string
-    action_type?: 'Attack' | 'Defense' | 'Buff' | 'Heal'
+    action_type?: 'Attack' | 'Defense' | 'Buff' | 'Heal' | 'Debuff'
     attack?: number
     defense?: number
     action_points?: number
@@ -18,6 +18,7 @@ const typeClassMap: Record<string, string> = {
     Defense: styles.defenseCard,
     Buff: styles.buffCard,
     Heal: styles.healCard,
+    Debuff: styles.debuffCard,
 }
 
 const Card: React.FC<CardProps> = ({
@@ -38,7 +39,7 @@ const Card: React.FC<CardProps> = ({
 
             <div className={styles.iconContainer}>
                 <div className={styles.iconBG} />
-                <img src={`src/public/${art}`} alt={name} />
+                <img src={`/${art}`} alt={name} />
             </div>
 
             <div className={styles.description}>{description}</div>

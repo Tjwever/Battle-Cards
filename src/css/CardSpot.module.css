@@ -6,6 +6,26 @@
   gap: 10px;
 }
 
+.clickable {
+  border: none;
+  background: transparent;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+}
+
+.clickable:hover .cardVisual {
+  border-color: rgba(240, 192, 64, 0.45);
+  background: rgba(255, 255, 255, 0.05);
+  box-shadow: 0 0 22px rgba(240, 192, 64, 0.12);
+}
+
+.clickable:focus-visible {
+  outline: 2px solid var(--accent-gold);
+  outline-offset: 4px;
+  border-radius: 12px;
+}
+
 .label {
   font-family: "Cinzel", serif;
   font-size: 0.8rem;
